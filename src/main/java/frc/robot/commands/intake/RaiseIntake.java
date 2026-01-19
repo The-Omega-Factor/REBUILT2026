@@ -34,9 +34,10 @@ public class RaiseIntake extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        // Hold current position by setting the current position as the target.
-        // TODO: revisit this behavior later — consider different end behavior
-        // (stop controller, soft-limits, or explicit hold) after testing on hardware.
-        intakePivot.setIntakePivotPosition(intakePivot.getPivotPosition());
+        if (interrupted) {
+            intakePivot.stopIntakePivot();
+        } else {
+            intakePivot.setIntakePivotPosition(intakePivot.getPivotPosition());
+        }
     }
 }

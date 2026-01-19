@@ -6,7 +6,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -28,16 +27,20 @@ public class IntakeSystem extends SubsystemBase {
 
         intakePivot.getConfigurator().apply(intakePivotConfiguration);
         intakePivot.setNeutralMode(NeutralModeValue.Brake);
-        intakePivot.setPosition(0.0);
+        intakePivot.setPosition(IntakeConstants.PIVOT_ENGAGED_POSITION);
 
         intakeSpinConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         intakeSpin.getConfigurator().apply(intakeSpinConfiguration);
-        intakeSpin.setNeutralMode(NeutralModeValue.Brake);
+        intakeSpin.setNeutralMode(NeutralModeValue.Coast);
     }
 
     public void setIntakePivotPosition(double position) {
         intakePivot.setControl(intakePivotPositionRequest.withPosition(position));
+    }
+
+    public void stopIntakePivot() {
+        intakePivot.stopMotor();
     }
 
     public void setIntakeSpeed(double speed) {

@@ -13,10 +13,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
-
   public static class IntakeConstants {
     public static final int INTAKE_SPIN_ID = 5;
     public static final int INTAKE_PIVOT_ID = 5;
@@ -25,7 +21,7 @@ public final class Constants {
     public static final double PIVOT_DISENGAGED_POSITION = 10;
     public static final double PIVOT_ENGAGED_POSITION = 0.0;
 
-    public static final double KP= 0.7;
+    public static final double KP = 0.7;
     public static final double KI = 0.0;
     public static final double KD = 0.3;
 
