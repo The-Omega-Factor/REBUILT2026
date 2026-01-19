@@ -13,18 +13,18 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSystem extends SubsystemBase {
     private final PositionVoltage intakePivotPositionRequest = new PositionVoltage(0);
     private final TalonFXConfiguration intakePivotConfiguration = new TalonFXConfiguration();
-    private final TalonFX intakePivot = new TalonFX(IntakeConstants.intakePivotID);
+    private final TalonFX intakePivot = new TalonFX(IntakeConstants.INTAKE_PIVOT_ID);
 
     private final TalonFXConfiguration intakeSpinConfiguration = new TalonFXConfiguration();
-    private final TalonFX intakeSpin = new TalonFX(IntakeConstants.intakeSpinID);
+    private final TalonFX intakeSpin = new TalonFX(IntakeConstants.INTAKE_SPIN_ID);
 
     public IntakeSystem() {
         intakePivotConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        intakePivotConfiguration.Feedback.SensorToMechanismRatio = IntakeConstants.pivotGearing;
+        intakePivotConfiguration.Feedback.SensorToMechanismRatio = IntakeConstants.PIVOT_GEARING;
 
-        intakePivotConfiguration.Slot0.kP = IntakeConstants.kP;
-        intakePivotConfiguration.Slot0.kI = IntakeConstants.kI;
-        intakePivotConfiguration.Slot0.kD = IntakeConstants.kD;
+        intakePivotConfiguration.Slot0.kP = IntakeConstants.KP;
+        intakePivotConfiguration.Slot0.kI = IntakeConstants.KI;
+        intakePivotConfiguration.Slot0.kD = IntakeConstants.KD;
 
         intakePivot.getConfigurator().apply(intakePivotConfiguration);
         intakePivot.setNeutralMode(NeutralModeValue.Brake);

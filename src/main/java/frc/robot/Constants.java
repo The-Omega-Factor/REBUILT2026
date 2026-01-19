@@ -18,14 +18,17 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    public static final int intakeSpinID = 5;
-    public static final int intakePivotID = 5;
+    public static final int INTAKE_SPIN_ID = 5;
+    public static final int INTAKE_PIVOT_ID = 5;
 
-    public static final double pivotGearing = 1.0;        //reduction
-    public static final double pivotTargetPosition = 10;
+    public static final double PIVOT_GEARING = 1.0;        //reduction
+    public static final double PIVOT_DISENGAGED_POSITION = 10;
+    public static final double PIVOT_ENGAGED_POSITION = 0.0;
 
-    public static final double kP= 0.7;
-    public static final double kI = 0.0;
-    public static final double kD = 0.3;
+    public static final double KP= 0.7;
+    public static final double KI = 0.0;
+    public static final double KD = 0.3;
+
+    public static final double PID_ERROR_TOLERANCE = 1e-2;
   }
 }

@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSystem;
 
-public class RaiseIntake extends Command {
+public class LowerIntake extends Command {
     private final IntakeSystem intakePivot;
 
-    public RaiseIntake(IntakeSystem intakePivot) {
+    public LowerIntake(IntakeSystem intakePivot) {
         this.intakePivot = intakePivot;
 
         addRequirements(intakePivot);
@@ -15,8 +15,8 @@ public class RaiseIntake extends Command {
 
     @Override
     public void initialize() {
-        if (Math.abs(intakePivot.getPivotPosition()) < IntakeConstants.PID_ERROR_TOLERANCE) {
-            intakePivot.setIntakePivotPosition(IntakeConstants.PIVOT_DISENGAGED_POSITION);
+        if (Math.abs(intakePivot.getPivotPosition() - IntakeConstants.PIVOT_DISENGAGED_POSITION) < IntakeConstants.PID_ERROR_TOLERANCE) {
+            intakePivot.setIntakePivotPosition(IntakeConstants.PIVOT_ENGAGED_POSITION);
         } else {
             cancel();
         }
@@ -27,9 +27,7 @@ public class RaiseIntake extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(
-            intakePivot.getPivotPosition() - IntakeConstants.PIVOT_DISENGAGED_POSITION
-            ) < IntakeConstants.PID_ERROR_TOLERANCE;
+        return Math.abs(intakePivot.getPivotPosition()) < IntakeConstants.PID_ERROR_TOLERANCE;
     }
 
     @Override
