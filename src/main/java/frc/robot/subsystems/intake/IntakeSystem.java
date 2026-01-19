@@ -34,13 +34,6 @@ public class IntakeSystem extends SubsystemBase {
 
         intakeSpin.getConfigurator().apply(intakeSpinConfiguration);
         intakeSpin.setNeutralMode(NeutralModeValue.Brake);
-
-        setDefaultCommand(new RunCommand(
-            () -> {
-                setIntakeSpeed(0);
-                setIntakePivotPosition(getPivotPosition());
-            }, 
-            this));
     }
 
     public void setIntakePivotPosition(double position) {

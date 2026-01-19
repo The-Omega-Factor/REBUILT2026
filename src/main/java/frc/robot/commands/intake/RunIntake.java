@@ -1,13 +1,15 @@
 package frc.robot.commands.intake;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.intake.IntakeSystem;
 
 public class RunIntake extends Command {
     private final IntakeSystem intakeSpin;
-    private final double speed;
+    private final DoubleSupplier speed;
 
-    public RunIntake(IntakeSystem intakeSystem, double speed) {
+    public RunIntake(IntakeSystem intakeSystem, DoubleSupplier speed) {
         this.intakeSpin = intakeSystem;
         this.speed = speed;
 
@@ -16,7 +18,7 @@ public class RunIntake extends Command {
 
     @Override
     public void execute() {
-        intakeSpin.setIntakeSpeed(speed);
+        intakeSpin.setIntakeSpeed(speed.getAsDouble());
     }
 
     @Override
