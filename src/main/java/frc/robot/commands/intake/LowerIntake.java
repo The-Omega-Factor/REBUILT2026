@@ -4,6 +4,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSystem;
 
+/**
+ * Command lower the intakePivot and engages the intake mechanism
+ */
 public class LowerIntake extends Command {
     private final IntakeSystem intakePivot;
 

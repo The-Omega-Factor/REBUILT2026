@@ -18,6 +18,18 @@ public class IntakeSystem extends SubsystemBase {
     private final TalonFX intakeSpin = new TalonFX(IntakeConstants.INTAKE_SPIN_ID);
 
     public IntakeSystem() {
+
+        /*
+         * intakePivot (The arm that moves the intake up and down)
+         * 
+         * Neutral Mode is BRAKE
+         * A gear ratio of 1.0 is used (no gear ratio set)
+         * Starting position must be when the intake is engaged (intake is lowered) 
+         * 
+         * Set Intake Pivot direction
+         * Tune KP and KD
+         */
+
         intakePivotConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         intakePivotConfiguration.Feedback.SensorToMechanismRatio = IntakeConstants.PIVOT_GEARING;
 
@@ -29,15 +41,36 @@ public class IntakeSystem extends SubsystemBase {
         intakePivot.setNeutralMode(NeutralModeValue.Brake);
         intakePivot.setPosition(IntakeConstants.PIVOT_ENGAGED_POSITION);
 
+        /*
+         * intakeSpin (The rolling part of the intake)
+         *
+         * Neutral mode is COAST
+         * 
+         * Set intake direction
+         */
+
         intakeSpinConfiguration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         intakeSpin.getConfigurator().apply(intakeSpinConfiguration);
         intakeSpin.setNeutralMode(NeutralModeValue.Coast);
     }
 
+    /**
+     * Intake pivot moves to position using an internal, hardware PID loop.
+     * The PID values can be tuned in the IntakeConstants class (in Constants.java file)
+     * Benefits greatly from accurate gear ratios
+     * 
+     * @param position measured in rotations
+     */
+
     public void setIntakePivotPosition(double position) {
         intakePivot.setControl(intakePivotPositionRequest.withPosition(position));
     }
+    
+    /**
+     * Force stop the intake pivot entirely
+     * The motor enter neutral momde and brake
+     */
 
     public void stopIntakePivot() {
         intakePivot.stopMotor();
