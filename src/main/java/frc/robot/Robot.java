@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private String teamColor;
 
   private final RobotContainer robotContainer;
   /**
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-
+    teamColor = robotContainer.getAutoChooser().getSelected().split(" ")[0];
   }
 
   /** This function is called periodically during autonomous. */
@@ -88,4 +89,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  public RobotContainer geRobotContainer() {
+    return robotContainer;
+  }
 }

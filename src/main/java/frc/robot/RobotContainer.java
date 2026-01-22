@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -19,8 +20,22 @@ public class RobotContainer {
   private final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
 
-
+  private final SendableChooser<String> autoChooser = new SendableChooser<String>();
+  
   public RobotContainer() {
+    autoChooser.setDefaultOption(
+      "Blue Left", null);
+    autoChooser.addOption(
+      "Blue Middle", null);
+    autoChooser.addOption(
+      "Blue Right", null);
+    autoChooser.addOption(
+      "Red Left", null);
+    autoChooser.addOption(
+      "Red Middle", null);
+    autoChooser.addOption(
+      "Red Right", null);
+
     configureIntakeButtons();
   }
 
@@ -39,5 +54,9 @@ public class RobotContainer {
         new RunCommand(() -> intakeSystem.setIntakePivotPosition(intakeSystem.getPivotPosition()), intakeSystem)
       )
     );
+  }
+
+  public SendableChooser<String> getAutoChooser() {
+    return autoChooser;
   }
 }
