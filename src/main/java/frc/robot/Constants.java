@@ -6,7 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -47,4 +51,112 @@ public final class Constants {
   public static final class Limelight {
     public static final String name = "Limelight"; 
   }
+
+  public static final class CANDevices {
+
+      //TODO: Make sure the IDs ar up to date and the canivore name is correct
+
+      public static final String CANivoreName = "SwerveBase";
+
+      public static final int PigeonID = 16;
+
+      public static final int frontLeftSteerMotorID = 4;
+      public static final int frontLeftDriveMotorID = 3;
+      public static final int frontLeftCANCoderID = 10;
+
+      public static final int frontRightSteerMotorID = 2;
+      public static final int frontRightDriveMotorID = 1;
+      public static final int frontRightCANCoderID = 9;
+
+      public static final int backLeftSteerMotorID = 6;
+      public static final int backLeftDriveMotorID = 5;
+      public static final int backLeftCANCoderID = 11;
+
+      public static final int backRightSteerMotorID = 8;
+      public static final int backRightDriveMotorID = 7;
+      public static final int backRightCANCoderID = 12;
+  }
+
+  public static final class DrivetrainConstants {
+
+        //TODO: Measure from center of each wheel to the center of the the other wheel
+
+        public static final double trackWidth = Units.inchesToMeters(24);
+
+        public static final double wheelBase = Units.inchesToMeters(24);
+
+        public static final SwerveDriveKinematics kinematics = 
+            new SwerveDriveKinematics(
+                new Translation2d(trackWidth/ 2.0, wheelBase / 2.0), // front left module
+                new Translation2d(trackWidth / 2.0, -wheelBase / 2.0), // front right module
+                new Translation2d(-trackWidth / 2.0, wheelBase / 2.0), // back left module
+                new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0) // back right module
+            );
+
+        public static final double driveMotorGearReduction = 6.75 / 1.0;
+        public static final double steerMotorGearReduction = ((150.0 / 7.0) / 1.0);
+
+        public static final double wheelRadiusMeter = Units.inchesToMeters(1.96875); //Diameter is ~ 4 inchs
+        public static final double wheelCircumferenceMeters = 2.0 * wheelRadiusMeter * Math.PI;
+
+        public static final double driveMetersPerEncoderRevolution = wheelCircumferenceMeters / driveMotorGearReduction;
+        public static final double driveMetersPerSecRPM = driveMetersPerEncoderRevolution / 60;
+
+        public static final double steerRadiansPerEncoderRevolution = 2.0 * Math.PI / steerMotorGearReduction;
+
+        public static final double kFreeMetersPerSecond = 5600 * driveMetersPerSecRPM;
+
+        public static final double steerMotorMaxSpeedRadianPerSecond = 2.0;
+        public static final double steerMotorMaxAccelRadPerSecSq = 1.0;
+
+        public static final double maxDriveSpeedMetersPerSec = Units.feetToMeters(15.5);
+        public static final double maxTurnRateRadPerSec = Units.rotationsToRadians(2.0);
+
+        //TODO: Double check these values
+
+        public static final Rotation2d frontLeftModOffset = Rotation2d.fromRotations(0.564453); // Rotations + 0.5 Radians + PI Degrees + 180
+        public static final Rotation2d frontRightModOffset = Rotation2d.fromRotations(0.393066);
+        public static final Rotation2d backLeftModOffset = Rotation2d.fromRotations(0.471436);
+        public static final Rotation2d backRightModOffset = Rotation2d.fromRotations(0.517578);
+
+        public static final int frontLeftModuleNumber = 0;
+        public static final int frontRightModuleNumber = 1;
+        public static final int backLeftModuleNumber = 2;
+        public static final int backRightModuleNumber = 3;
+
+        public static final int driveCurrentLimitAmps = 40;
+        public static final int steerCurrentLimitAmps = 20;
+        public static final int driveCurrentLimitThreshold = 60;
+        public static final int steerCurrentLimitThreshold = 40;
+
+        public static final double drivekP = 0.005;
+        public static final double drivekD = 0.0;
+
+        public static final double steerkP = 0.37431;
+        public static final double steerkD = 0.27186;
+
+        public static final double ksVolts = 0.667;
+        public static final double kvVoltSecsPerMeter = 2.44;
+        public static final double kaVoltSecsPerMeterSq = 0.0;
+        
+        public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(ksVolts, kvVoltSecsPerMeter, kaVoltSecsPerMeterSq);
+     
+
+    }
+
+    public static final class AutoConstants {
+            
+        public static final double maxVelMetersPerSec = Units.feetToMeters(8);
+
+        public static final double drivekP = 12.8;
+        public static final double drivekD = 0.085;
+
+        public static final PIDConstants driveConstants = new PIDConstants(drivekP, drivekD);
+
+        public static final double rotkP = 1.27;
+        public static final double rotkD = 0.5;
+
+        public static final PIDConstants rotConstants = new PIDConstants(rotkP, rotkD);
+
+    }
 }

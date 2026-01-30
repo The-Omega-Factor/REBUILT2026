@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drive;
 
+
 import java.lang.constant.Constable;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem() {
@@ -53,9 +56,5 @@ public class SwerveSubsystem extends SubsystemBase {
     //        },
     //        this // Reference to this subsystem to set requirements
     //);
-  }
-
-  public Pose2d getPose() {
-    return LimelightHelpers.getBotPose2d_wpiBlue(Constants.Limelight.name);
   }
 }

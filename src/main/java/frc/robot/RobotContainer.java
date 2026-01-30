@@ -14,6 +14,9 @@ import frc.robot.commands.intake.RunIntake;
 import frc.robot.subsystems.intake.IntakeSystem;
 
 public class RobotContainer {
+  private String autoName;
+  private String teamColor;
+
   private final IntakeSystem intakeSystem = new IntakeSystem();
   
   private final XboxController xboxController = new XboxController(0);
@@ -58,5 +61,14 @@ public class RobotContainer {
 
   public SendableChooser<String> getAutoChooser() {
     return autoChooser;
+  }
+
+  public void setAutoNameAndTeamColor(String autoName) {
+    this.autoName = autoName;
+    this.teamColor = this.autoName.split(" ")[0];
+  }
+
+  public String getTeamColor() {
+    return teamColor;
   }
 }
