@@ -159,4 +159,16 @@ public final class Constants {
         public static final PIDConstants rotConstants = new PIDConstants(rotkP, rotkD);
 
     }
+
+    //TODO: make sure the shooter constats values are correct
+    public static final class ShooterConstants {
+      public static final int shooterLID = 5;
+      public static final int shooterRID = 6;
+
+      public static final double shooterGearing = 1;
+
+      public static final double KP = 1;
+      public static final double KI = 0;
+      public static final double KD = 0.1;
+    }
 }
