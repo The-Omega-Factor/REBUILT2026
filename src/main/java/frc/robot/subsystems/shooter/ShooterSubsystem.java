@@ -1,9 +1,13 @@
 package frc.robot.subsystems.shooter;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,38 +19,33 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFXConfiguration shooterLConfig = new TalonFXConfiguration();
     private final TalonFX shooterL = new TalonFX(ShooterConstants.shooterLID);
 
-    private final TalonFXConfiguration shooterRConfig = new TalonFXConfiguration();
     private final TalonFX shooterR = new TalonFX(ShooterConstants.shooterRID);
 
     public ShooterSubsystem() {
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        shooterRConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+        shooterR.setControl(new Follower(ShooterConstants.shooterLID, MotorAlignmentValue.Opposed));
 
         shooterLConfig.Feedback.SensorToMechanismRatio = ShooterConstants.shooterGearing;
-        shooterRConfig.Feedback.SensorToMechanismRatio = ShooterConstants.shooterGearing;
 
         shooterLConfig.Slot0.kP = ShooterConstants.KP;
         shooterLConfig.Slot0.kI = ShooterConstants.KI;
         shooterLConfig.Slot0.kD = ShooterConstants.KD;
-        
-        shooterRConfig.Slot0.kP = ShooterConstants.KP;
-        shooterRConfig.Slot0.kI = ShooterConstants.KI;
-        shooterRConfig.Slot0.kD = ShooterConstants.KD;
 
-        shooterL.setNeutralMode(NeutralModeValue.Coast);
         shooterL.setNeutralMode(NeutralModeValue.Coast);
 
         shooterL.getConfigurator().apply(shooterLConfig);
-        shooterR.getConfigurator().apply(shooterRConfig);
     }
 
-    public void setIntakeVelocity(double velocity) {
+    public void setShooterVelocity(double velocity) {
         shooterL.setControl(velocityControllerRequest.withVelocity(velocity));
-        shooterR.setControl(velocityControllerRequest.withVelocity(velocity));
     }
 
     public void stopShooter() {
         shooterL.stopMotor();
-        shooterR.stopMotor();
+    }
+
+    public double getVelocity() {
+        return shooterL.getVelocity().getValueAsDouble();
     }
 }

@@ -163,7 +163,7 @@ public final class Constants {
     //TODO: make sure the shooter constats values are correct
     public static final class ShooterConstants {
       public static final int shooterLID = 5;
-      public static final int shooterRID = 6;
+      public static final int shooterRID = 5;
 
       public static final double shooterGearing = 1;
 
