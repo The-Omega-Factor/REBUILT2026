@@ -1,7 +1,5 @@
 package frc.robot.subsystems.shooter;
 
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
