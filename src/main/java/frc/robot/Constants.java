@@ -163,12 +163,26 @@ public final class Constants {
     //TODO: make sure the shooter constats values are correct
     public static final class ShooterConstants {
       public static final int shooterLID = 5;
-      public static final int shooterRID = 5;
+      public static final int shooterRID = 6;
 
       public static final double shooterGearing = 1;
 
       public static final double KP = 1;
       public static final double KI = 0;
       public static final double KD = 0.1;
+    }
+
+    public static final class ElevatorConstants {
+      public static final int elevatorID = 7;
+      public static final double elevatorGearing = 1;
+
+      public static final double retractedPosition = 0;
+      public static final double extendedPosition = 1000;
+
+      public static final double KP = 1;
+      public static final double KI = 0;
+      public static final double KD = 0.1;
+
+      public static final double errorTolerance = 1e-2;
     }
 }
