@@ -170,6 +170,10 @@ public final class Constants {
       public static final double KP = 1;
       public static final double KI = 0;
       public static final double KD = 0.1;
+
+      public static final double heightFromGround = 2; //inch
+
+      public static final double simpleShootingSpeedMultiplier = 10;
     }
 
     public static final class ElevatorConstants {
@@ -184,5 +188,9 @@ public final class Constants {
       public static final double KD = 0.1;
 
       public static final double errorTolerance = 1e-2;
+    }
+
+    public static final class FieldConstants {
+      public static final double goalHeight = 2; //inch
     }
 }
