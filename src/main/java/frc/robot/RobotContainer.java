@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSystem;
@@ -93,6 +95,13 @@ public class RobotContainer {
   //Elevator
 
   xButton.onTrue(new DynamicElevation(elevatorSubsystem));
+
+  //Shooter
+
+  shooterSubsystem.setDefaultCommand(new Shoot(shooterSubsystem, () -> MathUtil.applyDeadband(
+          xboxController.getRightY() * ShooterConstants.drivershootingSpeedMultipler,
+          ControllerConstants.joystickDeadband
+      )));
 }
 
 

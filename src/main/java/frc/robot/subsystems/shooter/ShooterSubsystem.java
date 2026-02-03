@@ -64,16 +64,16 @@ public class ShooterSubsystem extends SubsystemBase {
         this.teamColor = teamColor;
     }
 
-    @Override
-    public void periodic() {
-        if (currentPose != null) {
-            double currentPoseX = currentPose.getX();
-            double currentPoseY = currentPose.getY();
-
-            double fieldX = teamColor == "RED" ? FieldConstants.redX : FieldConstants.blueX;
-            double fieldY = FieldConstants.hubY; 
-            
-            setShooterVelocity(SimpleShootingSpeedCalculator.getShooterSpeed(currentPoseX, currentPoseY, fieldY, fieldX));
-        }
-    }
+    //@Override
+    //public void periodic() {
+    //    if (currentPose != null) {
+    //        double currentPoseX = currentPose.getX();
+    //        double currentPoseY = currentPose.getY();
+//
+    //        double fieldX = teamColor == "RED" ? FieldConstants.redX : FieldConstants.blueX;
+    //        double fieldY = FieldConstants.hubY; 
+    //        
+    //        setShooterVelocity(SimpleShootingSpeedCalculator.getShooterSpeed(currentPoseX, currentPoseY, fieldY, fieldX));
+    //    }
+    //}
 }
