@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.drivetrain.DriveCommand;
+import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
@@ -28,9 +29,9 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   
   private final XboxController xboxController = new XboxController(0);
-  private final XboxController driverController = new XboxController(1);
   private final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
+  private final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
 
   private final SendableChooser<String> autoChooser = new SendableChooser<String>();
   
@@ -48,10 +49,12 @@ public class RobotContainer {
     autoChooser.addOption(
       "Red Right", null);
 
-    configureIntakeButtons();
+    configureButtons();
   }
 
-  private void configureIntakeButtons() {
+  private void configureButtons() {
+    //Intake
+
     DoubleSupplier spinnerSpeed = () -> MathUtil.copyDirectionPow(
       MathUtil.applyDeadband(xboxController.getRightY(), 1e-2), 
       2
@@ -67,23 +70,29 @@ public class RobotContainer {
       )
     );
 
+    //Swerve
+
     swerveDrive.setDefaultCommand(new DriveCommand(
       () -> MathUtil.applyDeadband(
-          driverController.getLeftY(),
+          xboxController.getLeftY(),
           ControllerConstants.joystickDeadband
       ),
       () -> MathUtil.applyDeadband(
-          driverController.getLeftX(),
+          xboxController.getLeftX(),
           ControllerConstants.joystickDeadband
       ),
       () -> MathUtil.applyDeadband(
-          driverController.getRightX(),
+          xboxController.getRightX(),
           ControllerConstants.joystickDeadband
       ),
       true,
       true,
       swerveDrive
   ));
+
+  //Elevator
+
+  xButton.onTrue(new DynamicElevation(elevatorSubsystem));
 }
 
 
