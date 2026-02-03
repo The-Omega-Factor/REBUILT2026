@@ -39,4 +39,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void stop() {
         elevator.stopMotor();
     }
+
+    public boolean isExtended() {
+        return Math.abs(getPosition() - ElevatorConstants.extendedPosition) < ElevatorConstants.errorTolerance;
+    }
+
+    public boolean isRetracted() {
+        return Math.abs(getPosition() - ElevatorConstants.retractedPosition) < ElevatorConstants.errorTolerance;
+    }
 }

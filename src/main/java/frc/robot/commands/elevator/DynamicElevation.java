@@ -10,9 +10,8 @@ public class DynamicElevation extends Command {
 
     public DynamicElevation(ElevatorSubsystem elevator) {
         this.elevator = elevator;
-        this.target = Math.abs(elevator.getPosition() - ElevatorConstants.extendedPosition) < ElevatorConstants.errorTolerance ?
-                        ElevatorConstants.retractedPosition : ElevatorConstants.extendedPosition;
-
+        this.target = elevator.isExtended() ? ElevatorConstants.retractedPosition : ElevatorConstants.extendedPosition;
+ 
         addRequirements(elevator);
     }
 
