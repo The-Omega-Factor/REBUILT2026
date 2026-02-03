@@ -8,7 +8,10 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.math.SimpleShootingSpeedCalculator;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -18,6 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX shooterL = new TalonFX(ShooterConstants.shooterLID);
 
     private final TalonFX shooterR = new TalonFX(ShooterConstants.shooterRID);
+    private Pose2d currentPose = null;
+    private String teamColor;
 
     public ShooterSubsystem() {
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -45,5 +50,30 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getVelocity() {
         return shooterL.getVelocity().getValueAsDouble();
+    }
+
+    public void setPose(Pose2d currentPose) {
+        this.currentPose = currentPose;
+    }
+
+    public Pose2d getPose() {
+        return currentPose;
+    }
+
+    public void setTeamColor(String teamColor) {
+        this.teamColor = teamColor;
+    }
+
+    @Override
+    public void periodic() {
+        if (currentPose != null) {
+            double currentPoseX = currentPose.getX();
+            double currentPoseY = currentPose.getY();
+
+            double fieldX = teamColor == "RED" ? FieldConstants.redX : FieldConstants.blueX;
+            double fieldY = FieldConstants.hubY; 
+            
+            setShooterVelocity(SimpleShootingSpeedCalculator.getShooterSpeed(currentPoseX, currentPoseY, fieldY, fieldX));
+        }
     }
 }

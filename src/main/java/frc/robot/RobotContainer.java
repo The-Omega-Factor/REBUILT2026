@@ -8,16 +8,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.Swerve;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 
 public class RobotContainer {
   private String autoName;
   private String teamColor;
 
   private final IntakeSystem intakeSystem = new IntakeSystem();
+  private final Swerve swerveDrive = new Swerve();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   
   private final XboxController xboxController = new XboxController(0);
   private final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
@@ -66,9 +72,14 @@ public class RobotContainer {
   public void setAutoNameAndTeamColor(String autoName) {
     this.autoName = autoName;
     this.teamColor = this.autoName.split(" ")[0];
+    shooterSubsystem.setTeamColor(this.teamColor);
   }
 
   public String getTeamColor() {
     return teamColor;
+  }
+
+  public Swerve getSwerve() {
+    return swerveDrive;
   }
 }

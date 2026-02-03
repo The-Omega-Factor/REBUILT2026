@@ -171,7 +171,7 @@ public final class Constants {
       public static final double KI = 0;
       public static final double KD = 0.1;
 
-      public static final double heightFromGround = 2; //inch
+      public static final double heightFromGround = 17; //inch
 
       public static final double simpleShootingSpeedMultiplier = 10;
     }
@@ -191,6 +191,11 @@ public final class Constants {
     }
 
     public static final class FieldConstants {
-      public static final double goalHeight = 2; //inch
+      public static final double goalHeight = 70; //inch
+
+      public static final double hubY = 15;
+
+      public static final double redX = 15;
+      public static final double blueX = 15;
     }
 }
