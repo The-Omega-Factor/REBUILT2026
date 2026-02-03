@@ -198,4 +198,15 @@ public final class Constants {
       public static final double redX = 15;
       public static final double blueX = 15;
     }
+
+    public static final class ControllerConstants {
+
+        public static final int driverGamepadPort = 0;
+        public static final int manipulatorGamepadPort = 1;
+
+        public static final double joystickDeadband = 0.1;
+
+        public static final double triggerPressedThreshold = 0.25;
+
+    }
 }

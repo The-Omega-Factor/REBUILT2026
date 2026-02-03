@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.Swerve;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -26,6 +28,7 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   
   private final XboxController xboxController = new XboxController(0);
+  private final XboxController driverController = new XboxController(1);
   private final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
 
@@ -63,7 +66,26 @@ public class RobotContainer {
         new RunCommand(() -> intakeSystem.setIntakePivotPosition(intakeSystem.getPivotPosition()), intakeSystem)
       )
     );
-  }
+
+    swerveDrive.setDefaultCommand(new DriveCommand(
+      () -> MathUtil.applyDeadband(
+          driverController.getLeftY(),
+          ControllerConstants.joystickDeadband
+      ),
+      () -> MathUtil.applyDeadband(
+          driverController.getLeftX(),
+          ControllerConstants.joystickDeadband
+      ),
+      () -> MathUtil.applyDeadband(
+          driverController.getRightX(),
+          ControllerConstants.joystickDeadband
+      ),
+      true,
+      true,
+      swerveDrive
+  ));
+}
+
 
   public SendableChooser<String> getAutoChooser() {
     return autoChooser;
