@@ -108,6 +108,5 @@ public class SwerveModule extends SubsystemBase {
             Rotation2d.fromRotations(steerMotor.getPosition().getValueAsDouble())
         );
 
-    }
-    
+    }   
 }

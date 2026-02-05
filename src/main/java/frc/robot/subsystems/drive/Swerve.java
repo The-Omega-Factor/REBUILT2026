@@ -112,7 +112,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometry.update(getGyroYaw(), getModulePositions());
+        odometry.update(getGyroYaw(), getModulePositions()); //TODO: Set limelight name
 
         LimelightHelpers.SetRobotOrientation("limelight-right", getHeading().getDegrees() - 232, 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate pose = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-right");
@@ -129,7 +129,7 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    private double speedFactor = 1.0;
+    private double speedFactor = 1.0; //TODO: Tune this
 
     public double getSpeedFactor() {
 

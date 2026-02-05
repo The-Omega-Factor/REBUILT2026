@@ -175,6 +175,7 @@ public final class Constants {
 
       public static final double simpleShootingSpeedMultiplier = 10;
       public static final double drivershootingSpeedMultipler = 50;
+      public static final double noAirResistanceSpeedMultiplier = 10;
     }
 
     public static final class ElevatorConstants {

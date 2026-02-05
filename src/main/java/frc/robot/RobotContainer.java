@@ -5,9 +5,12 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.lib.math.ShootingSpeedCalculators;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.drivetrain.DriveCommand;
@@ -36,6 +39,7 @@ public class RobotContainer {
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
   private final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
 
+  private final SequentialCommandGroup autonomousCommand;
   private final SendableChooser<String> autoChooser = new SendableChooser<String>();
   
   public RobotContainer() {
@@ -51,6 +55,13 @@ public class RobotContainer {
       "Red Middle", null);
     autoChooser.addOption(
       "Red Right", null);
+
+    this.autonomousCommand = new SequentialCommandGroup(
+      new Shoot(shooterSubsystem, () -> ShootingSpeedCalculators.simple(
+        swerveDrive.getPose().getX(), swerveDrive.getPose().getY(), 
+        teamColor.equals("blue") ? Constants.FieldConstants.blueX : Constants.FieldConstants.redX, 
+        Constants.FieldConstants.hubY))
+      );
 
     configureButtons();
   }
@@ -114,7 +125,7 @@ public class RobotContainer {
 
   public void setAutoNameAndTeamColor(String autoName) {
     this.autoName = autoName;
-    this.teamColor = this.autoName.split(" ")[0];
+    this.teamColor = this.autoName.split(" ")[0].strip().toLowerCase();
     shooterSubsystem.setTeamColor(this.teamColor);
   }
 
@@ -124,5 +135,9 @@ public class RobotContainer {
 
   public Swerve getSwerve() {
     return swerveDrive;
+  }
+
+  public Command getAutonomousCommand() {
+    return autonomousCommand;
   }
 }
