@@ -51,15 +51,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     robotContainer.setAutoNameAndTeamColor(robotContainer.getAutoChooser().getSelected());
-  }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-    Command autonomous = robotContainer.getAutonomousCommand();
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
 
-    if (autonomous != null) {
-      CommandScheduler.getInstance().schedule(autonomous);
+    if (m_autonomousCommand != null) {
+      CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
   }
 
@@ -71,6 +67,12 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+      m_autonomousCommand = null;
     }
+  }
+
+  @Override
+  public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
   }
 }

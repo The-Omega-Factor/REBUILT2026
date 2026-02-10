@@ -18,7 +18,6 @@ import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.shooter.AutoUpdateShootingSpeed;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
