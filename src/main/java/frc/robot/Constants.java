@@ -21,6 +21,9 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  //TODO: Check all constants
+
   public static class IntakeConstants {
     public static final int INTAKE_SPIN_ID = 5;
     public static final int INTAKE_PIVOT_ID = 5;
@@ -53,8 +56,6 @@ public final class Constants {
   }
 
   public static final class CANDevices {
-
-      //TODO: Make sure the IDs ar up to date and the canivore name is correct
 
       public static final String CANivoreName = "SwerveBase";
 
@@ -112,8 +113,6 @@ public final class Constants {
         public static final double maxDriveSpeedMetersPerSec = Units.feetToMeters(15.5);
         public static final double maxTurnRateRadPerSec = Units.rotationsToRadians(2.0);
 
-        //TODO: Double check these values
-
         public static final Rotation2d frontLeftModOffset = Rotation2d.fromRotations(0.564453); // Rotations + 0.5 Radians + PI Degrees + 180
         public static final Rotation2d frontRightModOffset = Rotation2d.fromRotations(0.393066);
         public static final Rotation2d backLeftModOffset = Rotation2d.fromRotations(0.471436);
@@ -160,12 +159,13 @@ public final class Constants {
 
     }
 
-    //TODO: make sure the shooter constats values are correct
     public static final class ShooterConstants {
       public static final int shooterLID = 5;
       public static final int shooterRID = 6;
+      public static final int indexerID = 7;
 
       public static final double shooterGearing = 1;
+      public static final double indexerGeraing = 1;
 
       public static final double KP = 1;
       public static final double KI = 0;
@@ -183,7 +183,7 @@ public final class Constants {
       public static final double elevatorGearing = 1;
 
       public static final double retractedPosition = 0;
-      public static final double extendedPosition = 1000;
+      public static final double extendedPosition = 1;
 
       public static final double KP = 1;
       public static final double KI = 0;

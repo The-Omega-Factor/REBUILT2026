@@ -18,6 +18,7 @@ import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.shooter.RunIndexer;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   
   private final XboxController xboxController = new XboxController(0);
+  private final XboxController swerveController = new XboxController(1);
   private final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
   private final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
@@ -66,10 +68,17 @@ public class RobotContainer {
   }
 
   private void configureButtons() {
+    //TODO: Migrate swerve to another controller
+
     //Intake
 
     DoubleSupplier spinnerSpeed = () -> MathUtil.copyDirectionPow(
       MathUtil.applyDeadband(xboxController.getRightY(), 1e-2), 
+      2
+      );
+
+    DoubleSupplier indexerSpeed = () -> MathUtil.copyDirectionPow(
+      MathUtil.applyDeadband(xboxController.getLeftY(), 1e-2), 
       2
       );
 
@@ -87,15 +96,15 @@ public class RobotContainer {
 
     swerveDrive.setDefaultCommand(new DriveCommand(
       () -> MathUtil.applyDeadband(
-          xboxController.getLeftY(),
+          swerveController.getLeftY(),
           ControllerConstants.joystickDeadband
       ),
       () -> MathUtil.applyDeadband(
-          xboxController.getLeftX(),
+          swerveController.getLeftX(),
           ControllerConstants.joystickDeadband
       ),
       () -> MathUtil.applyDeadband(
-          xboxController.getRightX(),
+          swerveController.getRightX(),
           ControllerConstants.joystickDeadband
       ),
       true,
@@ -109,10 +118,13 @@ public class RobotContainer {
 
   //Shooter
 
-  shooterSubsystem.setDefaultCommand(new Shoot(shooterSubsystem, () -> MathUtil.applyDeadband(
+  shooterSubsystem.setDefaultCommand(new ParallelCommandGroup(
+    new Shoot(shooterSubsystem, () -> MathUtil.applyDeadband(
           xboxController.getRightY() * ShooterConstants.drivershootingSpeedMultipler,
           ControllerConstants.joystickDeadband
-      )));
+      )),
+    new RunIndexer(shooterSubsystem, indexerSpeed)
+  ));
   
   //shooterSubsystem.setDefaultCommand(new AutoUpdateShootingSpeed(shooterSubsystem, swerveDrive, teamColor));
 }

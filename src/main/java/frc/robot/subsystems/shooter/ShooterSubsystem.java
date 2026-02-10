@@ -21,14 +21,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX shooterL = new TalonFX(ShooterConstants.shooterLID);
 
     private final TalonFX shooterR = new TalonFX(ShooterConstants.shooterRID);
+
+    private final TalonFXConfiguration indexerConfig = new TalonFXConfiguration();
+    private final TalonFX indexer = new TalonFX(ShooterConstants.indexerID); 
+
     private Pose2d currentPose = null;
     private String teamColor;
 
     public ShooterSubsystem() {
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
-        shooterR.setControl(new Follower(ShooterConstants.shooterLID, MotorAlignmentValue.Opposed));
-
         shooterLConfig.Feedback.SensorToMechanismRatio = ShooterConstants.shooterGearing;
 
         shooterLConfig.Slot0.kP = ShooterConstants.KP;
@@ -36,8 +37,15 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterLConfig.Slot0.kD = ShooterConstants.KD;
 
         shooterL.setNeutralMode(NeutralModeValue.Coast);
-
         shooterL.getConfigurator().apply(shooterLConfig);
+
+        //shooterR.setControl(new Follower(ShooterConstants.shooterLID, MotorAlignmentValue.Opposed));
+
+        indexerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        indexerConfig.Feedback.SensorToMechanismRatio = ShooterConstants.indexerGeraing;
+
+        indexer.setNeutralMode(NeutralModeValue.Coast);
+        indexer.getConfigurator().apply(indexerConfig);
     }
 
     public void setShooterVelocity(double velocity) {
@@ -56,11 +64,23 @@ public class ShooterSubsystem extends SubsystemBase {
         this.currentPose = currentPose;
     }
 
-    public Pose2d getPose() {
+    public Pose2d getShooterPose() {
         return currentPose;
     }
 
     public void setTeamColor(String teamColor) {
         this.teamColor = teamColor;
+    }
+
+    public void setIndexerVelocity(double velocity) {
+        indexer.setControl(velocityControllerRequest.withVelocity(velocity));
+    }
+
+    public double getIndexerVelocity() {
+        return indexer.getVelocity().getValueAsDouble();
+    }
+
+    public void stopIndexer() {
+        indexer.stopMotor();
     }
 }

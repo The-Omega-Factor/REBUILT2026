@@ -18,6 +18,7 @@ public class IntakeSystem extends SubsystemBase {
     private final TalonFX intakeSpin = new TalonFX(IntakeConstants.INTAKE_SPIN_ID);
 
     public IntakeSystem() {
+        //TODO: Look into Motion Magic x44
 
         /*
          * intakePivot (The arm that moves the intake up and down)
