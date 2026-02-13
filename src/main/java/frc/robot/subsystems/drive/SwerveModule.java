@@ -33,6 +33,7 @@ public class SwerveModule extends SubsystemBase {
     private final PositionVoltage steerPosition = new PositionVoltage(0);
 
     public SwerveModule(int driveMotorID, int steerMotorID, int canCoderID, Rotation2d offset, int moduleNumber) {
+        //TODO: Reintegrate CANCoder constructors (deprecated)
 
         this.moduleNumber = moduleNumber;
         this.angleOffset = offset;

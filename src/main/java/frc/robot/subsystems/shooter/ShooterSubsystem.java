@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterL.setNeutralMode(NeutralModeValue.Coast);
         shooterL.getConfigurator().apply(shooterLConfig);
 
-        //shooterR.setControl(new Follower(ShooterConstants.shooterLID, MotorAlignmentValue.Opposed));
+        shooterR.setControl(new Follower(ShooterConstants.shooterLID, MotorAlignmentValue.Opposed));
 
         indexerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         indexerConfig.Feedback.SensorToMechanismRatio = ShooterConstants.indexerGeraing;

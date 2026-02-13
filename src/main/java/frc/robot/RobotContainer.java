@@ -86,10 +86,7 @@ public class RobotContainer {
     bButton.onTrue(new LowerIntake(intakeSystem));
 
     intakeSystem.setDefaultCommand(
-      new ParallelCommandGroup(
-        new RunIntake(intakeSystem, spinnerSpeed),
-        new RunCommand(() -> intakeSystem.setIntakePivotPosition(intakeSystem.getPivotPosition()), intakeSystem)
-      )
+        new RunIntake(intakeSystem, spinnerSpeed)
     );
 
     //Swerve
