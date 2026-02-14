@@ -67,6 +67,10 @@ public class IntakeSystem extends SubsystemBase {
     public void setIntakePivotPosition(double position) {
         intakePivot.setControl(intakePivotPositionRequest.withPosition(position));
     }
+
+    public void holdIntakePivot() {
+        intakePivot.setControl(intakePivotPositionRequest.withPosition(intakePivot.getPosition().getValueAsDouble()));
+    }
     
     /**
      * Force stop the intake pivot entirely

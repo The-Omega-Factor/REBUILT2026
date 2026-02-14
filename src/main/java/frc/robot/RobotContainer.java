@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.math.ShootingSpeedCalculators;
@@ -20,6 +19,7 @@ import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.shooter.RunIndexer;
 import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootAndIndexer;
 import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSystem;
@@ -116,11 +116,7 @@ public class RobotContainer {
   //Shooter
 
   shooterSubsystem.setDefaultCommand(new ParallelCommandGroup(
-    new Shoot(shooterSubsystem, () -> MathUtil.applyDeadband(
-          xboxController.getRightY() * ShooterConstants.drivershootingSpeedMultipler,
-          ControllerConstants.joystickDeadband
-      )),
-    new RunIndexer(shooterSubsystem, indexerSpeed)
+    new ShootAndIndexer(shooterSubsystem, spinnerSpeed, indexerSpeed)
   ));
   
   //shooterSubsystem.setDefaultCommand(new AutoUpdateShootingSpeed(shooterSubsystem, swerveDrive, teamColor));

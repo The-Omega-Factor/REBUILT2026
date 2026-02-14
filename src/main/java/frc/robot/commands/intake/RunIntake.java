@@ -19,6 +19,7 @@ public class RunIntake extends Command {
     @Override
     public void execute() {
         intakeSpin.setIntakeSpeed(speed.getAsDouble());
+        intakeSpin.holdIntakePivot();
     }
 
     @Override
