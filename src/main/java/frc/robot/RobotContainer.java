@@ -11,13 +11,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.math.ShootingSpeedCalculators;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.shooter.RunIndexer;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAndIndexer;
 import frc.robot.subsystems.drive.Swerve;
@@ -40,7 +38,6 @@ public class RobotContainer {
   private final JoystickButton bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
   private final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
 
-  private final SequentialCommandGroup autonomousCommand;
   private final SendableChooser<String> autoChooser = new SendableChooser<String>();
   
   public RobotContainer() {
@@ -56,13 +53,6 @@ public class RobotContainer {
       "Red Middle", null);
     autoChooser.addOption(
       "Red Right", null);
-
-    this.autonomousCommand = new SequentialCommandGroup(
-      new Shoot(shooterSubsystem, () -> ShootingSpeedCalculators.simple(
-        swerveDrive.getPose().getX(), swerveDrive.getPose().getY(), 
-        teamColor.equals("blue") ? Constants.FieldConstants.blueX : Constants.FieldConstants.redX, 
-        Constants.FieldConstants.hubY))
-      );
 
     configureButtons();
   }
@@ -142,6 +132,31 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    SequentialCommandGroup autonomousCommand = null;
+
+    String selection = autoChooser.getSelected();
+    // fallback if nothing selected
+    if (selection == null) {
+      selection = "Blue Left";
+    }
+    // derive teamColor from selection
+    String selTeam = selection.split(" ")[0].strip().toLowerCase();
+
+    // create a DoubleSupplier that uses the now-known selTeam (no NPE)
+    DoubleSupplier autoSpeedSupplier = () -> ShootingSpeedCalculators.simple(
+        swerveDrive.getPose().getX(),
+        swerveDrive.getPose().getY(),
+        selTeam.equals("blue")
+            ? Constants.FieldConstants.blueX
+            : Constants.FieldConstants.redX,
+        Constants.FieldConstants.hubY
+    );
+
+      autonomousCommand = new SequentialCommandGroup(
+          new Shoot(shooterSubsystem, autoSpeedSupplier)
+          // add more steps here depending on the selected autonomous routine
+      );
+    
     return autonomousCommand;
   }
 }
