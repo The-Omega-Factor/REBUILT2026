@@ -30,5 +30,5 @@ public class RunIntake extends Command {
     @Override
     public void end(boolean interrupted) {
         intakeSpin.setIntakeSpeed(0.0);
-    }
+    }   
 }
