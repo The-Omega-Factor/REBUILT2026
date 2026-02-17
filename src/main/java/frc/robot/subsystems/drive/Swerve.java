@@ -42,7 +42,7 @@ public class Swerve extends SubsystemBase {
 
     private Field2d field = new Field2d();
 
-    private CANBus canbus = CANBus.roboRIO();
+    private CANBus canbus = new CANBus(CANDevices.CANivoreName);
 
     public Pigeon2 gyro = new Pigeon2(CANDevices.PigeonID, canbus);
 
