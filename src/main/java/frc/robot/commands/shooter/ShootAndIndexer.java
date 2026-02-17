@@ -14,6 +14,8 @@ public class ShootAndIndexer extends Command {
         this.shooterSubsystem = shooterSubsystem;
         this.shooterSpeed = shooterSpeed;
         this.indexerSpeed = indexerSpeed;
+
+        addRequirements(shooterSubsystem);
     }
 
     @Override
