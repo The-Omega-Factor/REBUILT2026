@@ -25,8 +25,8 @@ public final class Constants {
   //TODO: Check all constants
 
   public static class IntakeConstants {
-    public static final int INTAKE_SPIN_ID = 5;
-    public static final int INTAKE_PIVOT_ID = 5;
+    public static final int INTAKE_SPIN_ID = 67;
+    public static final int INTAKE_PIVOT_ID = 24;
 
     public static final double PIVOT_GEARING = 1.0;        //reduction
     public static final double PIVOT_DISENGAGED_POSITION = 10;
@@ -61,21 +61,21 @@ public final class Constants {
 
       public static final int PigeonID = 16;
 
-      public static final int frontLeftSteerMotorID = 4;
-      public static final int frontLeftDriveMotorID = 3;
-      public static final int frontLeftCANCoderID = 10;
+      public static final int frontLeftSteerMotorID = 2;
+      public static final int frontLeftDriveMotorID = 13;
+      public static final int frontLeftCANCoderID = 9;
 
-      public static final int frontRightSteerMotorID = 2;
-      public static final int frontRightDriveMotorID = 1;
-      public static final int frontRightCANCoderID = 9;
+      public static final int frontRightSteerMotorID = 4;
+      public static final int frontRightDriveMotorID = 21;
+      public static final int frontRightCANCoderID = 12;
 
       public static final int backLeftSteerMotorID = 6;
-      public static final int backLeftDriveMotorID = 5;
+      public static final int backLeftDriveMotorID = 1;
       public static final int backLeftCANCoderID = 11;
 
       public static final int backRightSteerMotorID = 8;
-      public static final int backRightDriveMotorID = 7;
-      public static final int backRightCANCoderID = 12;
+      public static final int backRightDriveMotorID = 18;
+      public static final int backRightCANCoderID = 10;
   }
 
   public static final class DrivetrainConstants {
@@ -160,9 +160,9 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-      public static final int shooterLID = 5;
-      public static final int shooterRID = 6;
-      public static final int indexerID = 7;
+      public static final int shooterLID = 0;
+      public static final int shooterRID = 14;
+      public static final int indexerID = 5;
 
       public static final double shooterGearing = 1;
       public static final double indexerGeraing = 1;
