@@ -53,10 +53,6 @@ public class Robot extends TimedRobot {
     robotContainer.setAutoNameAndTeamColor(robotContainer.getAutoChooser().getSelected());
 
     m_autonomousCommand = robotContainer.getAutonomousCommand();
-
-    if (m_autonomousCommand != null) {
-      CommandScheduler.getInstance().schedule(m_autonomousCommand);
-    }
   }
 
   @Override
@@ -73,6 +69,5 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-    CommandScheduler.getInstance().cancelAll();
   }
 }
