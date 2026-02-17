@@ -10,8 +10,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.math.ShootingSpeedCalculators;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -26,7 +24,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX indexer = new TalonFX(ShooterConstants.indexerID); 
 
     private Pose2d currentPose = null;
-    private String teamColor;
 
     public ShooterSubsystem() {
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -66,10 +63,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public Pose2d getShooterPose() {
         return currentPose;
-    }
-
-    public void setTeamColor(String teamColor) {
-        this.teamColor = teamColor;
     }
 
     public void setIndexerVelocity(double velocity) {

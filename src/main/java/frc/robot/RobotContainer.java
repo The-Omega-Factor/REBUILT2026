@@ -11,14 +11,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.math.ShootingSpeedCalculators;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.commands.elevator.DynamicElevation;
 import frc.robot.commands.intake.LowerIntake;
 import frc.robot.commands.intake.RaiseIntake;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAndIndexer;
-import frc.robot.subsystems.drive.Swerve;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.intake.IntakeSystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
@@ -28,7 +26,6 @@ public class RobotContainer {
   private String teamColor;
 
   private final IntakeSystem intakeSystem = new IntakeSystem();
-  private final Swerve swerveDrive = new Swerve();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   
@@ -79,26 +76,6 @@ public class RobotContainer {
         new RunIntake(intakeSystem, spinnerSpeed)
     );
 
-    //Swerve
-
-    swerveDrive.setDefaultCommand(new DriveCommand(
-      () -> MathUtil.applyDeadband(
-          swerveController.getLeftY(),
-          ControllerConstants.joystickDeadband
-      ),
-      () -> MathUtil.applyDeadband(
-          swerveController.getLeftX(),
-          ControllerConstants.joystickDeadband
-      ),
-      () -> MathUtil.applyDeadband(
-          swerveController.getRightX(),
-          ControllerConstants.joystickDeadband
-      ),
-      true,
-      true,
-      swerveDrive
-  ));
-
   //Elevator
 
   xButton.onTrue(new DynamicElevation(elevatorSubsystem));
@@ -120,43 +97,9 @@ public class RobotContainer {
   public void setAutoNameAndTeamColor(String autoName) {
     this.autoName = autoName;
     this.teamColor = this.autoName.split(" ")[0].strip().toLowerCase();
-    shooterSubsystem.setTeamColor(this.teamColor);
   }
 
   public String getTeamColor() {
     return teamColor;
-  }
-
-  public Swerve getSwerve() {
-    return swerveDrive;
-  }
-
-  public Command getAutonomousCommand() {
-    SequentialCommandGroup autonomousCommand = null;
-
-    String selection = autoChooser.getSelected();
-    // fallback if nothing selected
-    if (selection == null) {
-      selection = "Blue Left";
-    }
-    // derive teamColor from selection
-    String selTeam = selection.split(" ")[0].strip().toLowerCase();
-
-    // create a DoubleSupplier that uses the now-known selTeam (no NPE)
-    DoubleSupplier autoSpeedSupplier = () -> ShootingSpeedCalculators.simple(
-        swerveDrive.getPose().getX(),
-        swerveDrive.getPose().getY(),
-        selTeam.equals("blue")
-            ? Constants.FieldConstants.blueX
-            : Constants.FieldConstants.redX,
-        Constants.FieldConstants.hubY
-    );
-
-      autonomousCommand = new SequentialCommandGroup(
-          new Shoot(shooterSubsystem, autoSpeedSupplier)
-          // add more steps here depending on the selected autonomous routine
-      );
-    
-    return autonomousCommand;
   }
 }

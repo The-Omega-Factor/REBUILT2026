@@ -51,8 +51,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     robotContainer.setAutoNameAndTeamColor(robotContainer.getAutoChooser().getSelected());
-
-    m_autonomousCommand = robotContainer.getAutonomousCommand();
   }
 
   @Override
