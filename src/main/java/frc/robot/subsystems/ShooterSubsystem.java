@@ -18,6 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANBus canbus = new CANBus("SwerveBase");
 
     private final TalonFXConfiguration shooterLConfig = new TalonFXConfiguration();
+    private final TalonFXConfiguration shooterRConfig = new TalonFXConfiguration();
     private final TalonFX shooterL = new TalonFX(0, canbus);
     private final TalonFX shooterR = new TalonFX(14, canbus);
 
@@ -26,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX transfer = new TalonFX(5, canbus);
 
     private final VelocityVoltage shooterRequest = new VelocityVoltage(0).withSlot(0);
-    private final VelocityVoltage transferRequest = new VelocityVoltage(0).withSlot(1);
+    private final VelocityVoltage transferRequest = new VelocityVoltage(0).withSlot(0);
 
     public ShooterSubsystem() {
         shooterLConfig.Slot0.kP = 0.5;
@@ -37,10 +38,17 @@ public class ShooterSubsystem extends SubsystemBase {
         .withStatorCurrentLimitEnable(true));
 
         shooterL.getConfigurator().apply(shooterLConfig);
-        shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
-        shooterR.setNeutralMode(NeutralModeValue.Coast);
+        shooterL.setNeutralMode(NeutralModeValue.Coast);
 
-        transferConfig.Slot1.kP = 0.5;
+        shooterRConfig.withCurrentLimits(new CurrentLimitsConfigs()
+        .withStatorCurrentLimit(Amps.of(20))
+        .withStatorCurrentLimitEnable(true));
+
+        shooterR.getConfigurator().apply(shooterRConfig);
+        shooterR.setNeutralMode(NeutralModeValue.Coast);
+        shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
+
+        transferConfig.Slot0.kP = 0.5;
         transferConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         transferConfig.withCurrentLimits(new CurrentLimitsConfigs()
@@ -53,18 +61,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setShooterVelocity(double speed) {
         shooterL.setControl(shooterRequest.withVelocity(speed));
-        System.out.println("for testing commit");
-    }
-
-    public TalonFX getShooterL() {
-        return shooterL;
     }
 
     public void setTransferVelocity(double speed) {
         transfer.setControl(transferRequest.withVelocity(speed));
-    }
-
-    public TalonFX getTranfer() {
-        return transfer;
     }
 }
