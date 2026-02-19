@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootAndTransfer;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -36,7 +36,7 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final CommandXboxController testController = new CommandXboxController(1);
+    public final CommandXboxController notSwerveController = new CommandXboxController(1);
 
     private final ShooterSubsystem shooter = new ShooterSubsystem();
 
@@ -82,7 +82,9 @@ public class RobotContainer {
 
         //shooter
         
-        shooter.setDefaultCommand(new Shoot(shooter, () -> testController.getLeftY()));
+        shooter.setDefaultCommand(new ShootAndTransfer(shooter, 
+        () -> notSwerveController.getLeftY(), 
+        () -> notSwerveController.getRightY()));
     }
 
     public Command getAutonomousCommand() {
