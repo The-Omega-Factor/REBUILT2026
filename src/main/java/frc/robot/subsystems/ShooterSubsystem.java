@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Amps;
+
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -19,14 +22,24 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
 
+    private final TalonFXConfiguration transferConfig = new TalonFXConfiguration();
+    private TalonFX transfer = new TalonFX(5, canbus);
+
     public ShooterSubsystem() {
         shooterLConfig.Slot0.kP = 0.5;
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
+        shooterLConfig.withCurrentLimits(new CurrentLimitsConfigs()
+        .withStatorCurrentLimit(Amps.of(20))
+        .withStatorCurrentLimitEnable(true));
+
         shooterL.getConfigurator().apply(shooterLConfig);
         shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
-        shooterL.setNeutralMode(NeutralModeValue.Coast);
         shooterR.setNeutralMode(NeutralModeValue.Coast);
+
+        transferConfig.Slot0.kP = 0.5;
+        transferConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        
     }
 
     public void setVelocity(double speed) {
