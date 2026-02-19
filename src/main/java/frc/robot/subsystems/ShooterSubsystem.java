@@ -32,6 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         shooterLConfig.Slot0.kP = 0.5;
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        shooterLConfig.Feedback.SensorToMechanismRatio = 25/20;
 
         shooterLConfig.withCurrentLimits(new CurrentLimitsConfigs()
         .withStatorCurrentLimit(Amps.of(20))
@@ -41,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterL.setNeutralMode(NeutralModeValue.Coast);
 
         shooterRConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(20))
+        .withStatorCurrentLimit(Amps.of(67))
         .withStatorCurrentLimitEnable(true));
 
         shooterR.getConfigurator().apply(shooterRConfig);
@@ -50,9 +51,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
         transferConfig.Slot0.kP = 0.5;
         transferConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        transferConfig.Feedback.SensorToMechanismRatio = 35/20;
 
         transferConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(20))
+        .withStatorCurrentLimit(Amps.of(67))
         .withStatorCurrentLimitEnable(true));
 
         transfer.getConfigurator().apply(transferConfig);
@@ -60,10 +62,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setShooterVelocity(double speed) {
+        //rotation per second
+        speed *= (6000/60);
         shooterL.setControl(shooterRequest.withVelocity(speed));
     }
 
     public void setTransferVelocity(double speed) {
+        speed *= (6000/60);
         transfer.setControl(transferRequest.withVelocity(speed));
     }
 }
