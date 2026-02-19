@@ -53,6 +53,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setShooterVelocity(double speed) {
         shooterL.setControl(shooterRequest.withVelocity(speed));
+        System.out.println("for testing commit");
     }
 
     public TalonFX getShooterL() {
