@@ -23,11 +23,11 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonFX shooterR = new TalonFX(14, canbus);
 
 
-    private final TalonFXConfiguration transferConfig = new TalonFXConfiguration();
-    private final TalonFX transfer = new TalonFX(5, canbus);
+    private final TalonFXConfiguration hopperConfig = new TalonFXConfiguration();
+    private final TalonFX hopper = new TalonFX(5, canbus);
 
     private final VelocityVoltage shooterRequest = new VelocityVoltage(0).withSlot(0);
-    private final VelocityVoltage transferRequest = new VelocityVoltage(0).withSlot(0);
+    private final VelocityVoltage hopperRequest = new VelocityVoltage(0).withSlot(0);
 
     public ShooterSubsystem() {
         shooterLConfig.Slot0.kP = 0.5;
@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterLConfig.Feedback.SensorToMechanismRatio = 25/20;
 
         shooterLConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(20))
+        .withStatorCurrentLimit(Amps.of(67))
         .withStatorCurrentLimitEnable(true));
 
         shooterL.getConfigurator().apply(shooterLConfig);
@@ -49,16 +49,16 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterR.setNeutralMode(NeutralModeValue.Coast);
         shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
 
-        transferConfig.Slot0.kP = 0.5;
-        transferConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        transferConfig.Feedback.SensorToMechanismRatio = 35/20;
+        hopperConfig.Slot0.kP = 0.5;
+        hopperConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        hopperConfig.Feedback.SensorToMechanismRatio = 20/35;
 
-        transferConfig.withCurrentLimits(new CurrentLimitsConfigs()
+        hopperConfig.withCurrentLimits(new CurrentLimitsConfigs()
         .withStatorCurrentLimit(Amps.of(67))
         .withStatorCurrentLimitEnable(true));
 
-        transfer.getConfigurator().apply(transferConfig);
-        transfer.setNeutralMode(NeutralModeValue.Coast);
+        hopper.getConfigurator().apply(hopperConfig);
+        hopper.setNeutralMode(NeutralModeValue.Coast);
     }
 
     public void setShooterVelocity(double speed) {
@@ -67,8 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterL.setControl(shooterRequest.withVelocity(speed));
     }
 
-    public void setTransferVelocity(double speed) {
+    public void setHopperVelocity(double speed) {
         speed *= (6000/60);
-        transfer.setControl(transferRequest.withVelocity(speed));
+        hopper.setControl(hopperRequest.withVelocity(speed));
     }
 }

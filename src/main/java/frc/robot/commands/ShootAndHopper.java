@@ -5,16 +5,16 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootAndTransfer extends Command {
+public class ShootAndHopper extends Command {
 
     private final ShooterSubsystem shooterSubsystem;
     private final DoubleSupplier shooterSpeed;
-    private final DoubleSupplier transferSpeed;
+    private final DoubleSupplier hopperSpeed;
 
-    public ShootAndTransfer(ShooterSubsystem shooter, DoubleSupplier shooterSpeed, DoubleSupplier transferSpeed) {
+    public ShootAndHopper(ShooterSubsystem shooter, DoubleSupplier shooterSpeed, DoubleSupplier hopperSpeed) {
         this.shooterSubsystem = shooter;
         this.shooterSpeed = shooterSpeed;
-        this.transferSpeed = transferSpeed;
+        this.hopperSpeed = hopperSpeed;
 
         addRequirements(shooter);
     }
@@ -28,14 +28,14 @@ public class ShootAndTransfer extends Command {
     public void execute() {
         // Send velocity in RPS
         shooterSubsystem.setShooterVelocity(shooterSpeed.getAsDouble());
-        shooterSubsystem.setTransferVelocity(transferSpeed.getAsDouble());
+        shooterSubsystem.setHopperVelocity(hopperSpeed.getAsDouble());
     }
 
     @Override
     public void end(boolean interrupted) {
         // Stop shooter when command ends
         shooterSubsystem.setShooterVelocity(0);
-        shooterSubsystem.setTransferVelocity(0);
+        shooterSubsystem.setHopperVelocity(0);
         System.out.println("Shooter stopped");
     }
 
