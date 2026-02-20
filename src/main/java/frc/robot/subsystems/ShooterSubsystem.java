@@ -16,18 +16,29 @@ import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    private final TalonFXConfiguration shooterLConfig = new TalonFXConfiguration();
-    private final TalonFXConfiguration shooterRConfig = new TalonFXConfiguration();
-    private final TalonFX shooterL = new TalonFX(Constants.Shooter.shooterLID, Constants.canbus);
-    private final TalonFX shooterR = new TalonFX(Constants.Shooter.shooterRID, Constants.canbus);
+    private final TalonFXConfiguration shooterLConfig;
+    private final TalonFXConfiguration shooterRConfig;
+    private final TalonFXConfiguration hopperConfig;
 
-    private final TalonFXConfiguration hopperConfig = new TalonFXConfiguration();
-    private final TalonFX hopper = new TalonFX(5, Constants.canbus);
+    private final TalonFX shooterL;
+    private final TalonFX shooterR;
+    private final TalonFX hopper;
 
-    private final VelocityVoltage shooterRequest = new VelocityVoltage(0).withSlot(0);
-    private final VelocityVoltage hopperRequest = new VelocityVoltage(0).withSlot(0);
+    private final VelocityVoltage shooterRequest;
+    private final VelocityVoltage hopperRequest;
 
     public ShooterSubsystem() {
+        shooterLConfig = new TalonFXConfiguration();
+        shooterRConfig = new TalonFXConfiguration();
+        hopperConfig = new TalonFXConfiguration();
+
+        shooterL = new TalonFX(Constants.Shooter.shooterLID, Constants.canbus);
+        shooterR = new TalonFX(Constants.Shooter.shooterRID, Constants.canbus);
+        hopper = new TalonFX(Constants.Shooter.hopperID, Constants.canbus);
+
+        shooterRequest = new VelocityVoltage(0).withSlot(0);
+        hopperRequest = new VelocityVoltage(0).withSlot(0);
+
         shooterLConfig.Slot0.kP = Constants.Shooter.ShooterPIDS.kP;
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         shooterLConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.shootersGearRatio;

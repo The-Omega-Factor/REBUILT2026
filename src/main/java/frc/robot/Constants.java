@@ -44,7 +44,7 @@ public class Constants {
         }
     }
 
-    public static class IntakeConstants {
+    public static class Intake {
         public static final int spinID = 1;
 
         public static final double spinAmpsLimit = 50;

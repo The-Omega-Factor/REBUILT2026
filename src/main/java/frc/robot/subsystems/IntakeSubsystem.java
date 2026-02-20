@@ -11,21 +11,28 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.Intake;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private final TalonFXConfiguration spinConfig = new TalonFXConfiguration();
-    private final TalonFX intakeSpin = new TalonFX(IntakeConstants.spinID, Constants.canbus);
+    private final TalonFXConfiguration spinConfig;
+    
+    private final TalonFX intakeSpin;
 
-    private final VelocityVoltage spinRequest = new VelocityVoltage(0).withSlot(0);
+    private final VelocityVoltage spinRequest;
 
     public IntakeSubsystem() {
-        spinConfig.Slot0.kP = Constants.IntakeConstants.SpinPIDs.kP;
+        spinConfig = new TalonFXConfiguration();
+
+        intakeSpin = new TalonFX(Intake.spinID, Constants.canbus);
+
+        spinRequest = new VelocityVoltage(0).withSlot(0);
+
+        spinConfig.Slot0.kP = Constants.Intake.SpinPIDs.kP;
         spinConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         spinConfig.Feedback.SensorToMechanismRatio = 10/20;
 
         spinConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.IntakeConstants.spinAmpsLimit))
+        .withStatorCurrentLimit(Amps.of(Constants.Intake.spinAmpsLimit))
         .withStatorCurrentLimitEnable(true));
 
         intakeSpin.getConfigurator().apply(spinConfig);
