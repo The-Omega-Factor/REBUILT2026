@@ -18,8 +18,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final TalonFXConfiguration shooterLConfig = new TalonFXConfiguration();
     private final TalonFXConfiguration shooterRConfig = new TalonFXConfiguration();
-    private final TalonFX shooterL = new TalonFX(Constants.ShooterConstants.shooterLID, Constants.canbus);
-    private final TalonFX shooterR = new TalonFX(Constants.ShooterConstants.shooterRID, Constants.canbus);
+    private final TalonFX shooterL = new TalonFX(Constants.Shooter.shooterLID, Constants.canbus);
+    private final TalonFX shooterR = new TalonFX(Constants.Shooter.shooterRID, Constants.canbus);
 
     private final TalonFXConfiguration hopperConfig = new TalonFXConfiguration();
     private final TalonFX hopper = new TalonFX(5, Constants.canbus);
@@ -28,31 +28,31 @@ public class ShooterSubsystem extends SubsystemBase {
     private final VelocityVoltage hopperRequest = new VelocityVoltage(0).withSlot(0);
 
     public ShooterSubsystem() {
-        shooterLConfig.Slot0.kP = Constants.ShooterConstants.shooterPIDs.kP;
+        shooterLConfig.Slot0.kP = Constants.Shooter.ShooterPIDS.kP;
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        shooterLConfig.Feedback.SensorToMechanismRatio = Constants.ShooterConstants.shootersGearRatio;
+        shooterLConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.shootersGearRatio;
 
         shooterLConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.ShooterConstants.shootersAmpsLimit))
+        .withStatorCurrentLimit(Amps.of(Constants.Shooter.shootersAmpsLimit))
         .withStatorCurrentLimitEnable(true));
 
         shooterL.getConfigurator().apply(shooterLConfig);
         shooterL.setNeutralMode(NeutralModeValue.Coast);
 
         shooterRConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.ShooterConstants.shootersAmpsLimit))
+        .withStatorCurrentLimit(Amps.of(Constants.Shooter.shootersAmpsLimit))
         .withStatorCurrentLimitEnable(true));
 
         shooterR.getConfigurator().apply(shooterRConfig);
         shooterR.setNeutralMode(NeutralModeValue.Coast);
         shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
 
-        hopperConfig.Slot0.kP = Constants.ShooterConstants.hopperPIDs.kP;
+        hopperConfig.Slot0.kP = Constants.Shooter.HopperPIDs.kP;
         hopperConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        hopperConfig.Feedback.SensorToMechanismRatio = Constants.ShooterConstants.hopperGearRatio;
+        hopperConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.hopperGearRatio;
 
         hopperConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.ShooterConstants.hopperAmpsLimit))
+        .withStatorCurrentLimit(Amps.of(Constants.Shooter.hopperAmpsLimit))
         .withStatorCurrentLimitEnable(true));
 
         hopper.getConfigurator().apply(hopperConfig);
