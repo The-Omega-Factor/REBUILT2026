@@ -15,7 +15,7 @@ import frc.robot.Constants.Intake;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final TalonFXConfiguration spinConfig;
-    
+
     private final TalonFX intakeSpin;
 
     private final VelocityVoltage spinRequest;
@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         spinConfig.Slot0.kP = Constants.Intake.SpinPIDs.kP;
         spinConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        spinConfig.Feedback.SensorToMechanismRatio = 10/20;
+        spinConfig.Feedback.SensorToMechanismRatio = Constants.Intake.spinGearRatio;
 
         spinConfig.withCurrentLimits(new CurrentLimitsConfigs()
         .withStatorCurrentLimit(Amps.of(Constants.Intake.spinAmpsLimit))

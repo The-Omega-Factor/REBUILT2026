@@ -47,6 +47,8 @@ public class Constants {
     public static class Intake {
         public static final int spinID = 1;
 
+        public static final double spinGearRatio = 20/20;
+
         public static final double spinAmpsLimit = 50;
 
         public static class SpinPIDs {
