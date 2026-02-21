@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Amps;
-
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -48,16 +45,21 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         shooterLConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.shootersGearRatio;
 
-        shooterLConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.Shooter.shootersAmpsLimit))
-        .withStatorCurrentLimitEnable(true));
+        shooterLConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.shootersStatorAmpsLimit;
+        shooterLConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        shooterLConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        shooterLConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         shooterL.getConfigurator().apply(shooterLConfig);
         shooterL.setNeutralMode(NeutralModeValue.Coast);
 
-        shooterRConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.Shooter.shootersAmpsLimit))
-        .withStatorCurrentLimitEnable(true));
+        //TODO: Set X to toggle on and off the shooter
+        //TODO: set Left JoystickY to hopper
+
+        shooterRConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.shootersStatorAmpsLimit;
+        shooterRConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        shooterRConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        shooterRConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         shooterR.getConfigurator().apply(shooterRConfig);
         shooterR.setNeutralMode(NeutralModeValue.Coast);
@@ -67,9 +69,10 @@ public class ShooterSubsystem extends SubsystemBase {
         hopperConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         hopperConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.hopperGearRatio;
 
-        hopperConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.Shooter.hopperAmpsLimit))
-        .withStatorCurrentLimitEnable(true));
+        hopperConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.hopperStatorAmpsLimit;
+        hopperConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        hopperConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        hopperConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         hopper.getConfigurator().apply(hopperConfig);
         hopper.setNeutralMode(NeutralModeValue.Coast);

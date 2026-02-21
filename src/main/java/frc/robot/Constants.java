@@ -23,8 +23,8 @@ public class Constants {
         public static double shootersGearRatio = 25/20;
         public static double hopperGearRatio = 20/35;
 
-        public static double shootersAmpsLimit = 100;
-        public static double hopperAmpsLimit = 67;
+        public static double shootersStatorAmpsLimit = 100;
+        public static double hopperStatorAmpsLimit = 67;
 
         public static class ShooterPIDS {
             public static double kV = 0.5;
@@ -48,7 +48,7 @@ public class Constants {
     public static class Intake {
         public static final int spinID = 100;
         public static final double spinGearRatio = 20/20;
-        public static final double spinAmpsLimit = 50;
+        public static final double spinStatorAmpsLimit = 50;
 
         public static class SpinPIDs {
             public static double kP = 0.5;
@@ -59,7 +59,7 @@ public class Constants {
 
         public static final int pivotID = 100;
         public static final double pivotGearRatio = 20/20;
-        public static final double pivotAmpsLimt = 50;
+        public static final double pivotStatorAmpsLimit = 50;
 
         public static class pivotPIDs {
             public static double kP = 0.5;

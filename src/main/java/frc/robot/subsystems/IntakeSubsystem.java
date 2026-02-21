@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Amps;
-
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -40,21 +38,33 @@ public class IntakeSubsystem extends SubsystemBase {
         spinConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         spinConfig.Feedback.SensorToMechanismRatio = Constants.Intake.spinGearRatio;
 
-        spinConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.Intake.spinAmpsLimit))
-        .withStatorCurrentLimitEnable(true));
+        spinConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.spinStatorAmpsLimit;
+        spinConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        spinConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        spinConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         spin.getConfigurator().apply(spinConfig);
         spin.setNeutralMode(NeutralModeValue.Coast);
 
         //Intake Pivot configurations
         pivotConfig.Slot0.kP = Constants.Intake.pivotPIDs.kP;
+
+        MotionMagicConfigs pivotMM = new MotionMagicConfigs();
+        pivotMM.MotionMagicCruiseVelocity = 0;
+        pivotMM.MotionMagicAcceleration = 0;
+        pivotMM.MotionMagicJerk = 0;
+
+        //TODO: Right Trigger = intake, Left Trigger = outtake and both triggers disable it
+
+
+        //pivotConfig.MotionMagic = pivotMM;
         pivotConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         pivotConfig.Feedback.SensorToMechanismRatio = Constants.Intake.pivotGearRatio;
 
-        pivotConfig.withCurrentLimits(new CurrentLimitsConfigs()
-        .withStatorCurrentLimit(Amps.of(Constants.Intake.pivotAmpsLimt))
-        .withStatorCurrentLimitEnable(true));
+        pivotConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.pivotStatorAmpsLimit;
+        pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        pivotConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         pivot.getConfigurator().apply(pivotConfig);
         pivot.setNeutralMode(NeutralModeValue.Brake);
