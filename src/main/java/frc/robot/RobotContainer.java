@@ -84,14 +84,11 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         //shooter
-        
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> notSwerveController.getLeftY(), 
         () -> notSwerveController.getRightY()));
 
         //intake
-
-
         intake.setDefaultCommand(new SetIntakeState(intake, 
         () -> notSwerveController.getLeftX(),
         //Change this line (the division by a 100)

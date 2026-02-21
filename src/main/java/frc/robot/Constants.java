@@ -41,6 +41,8 @@ public class Constants {
             public static double kV = 0.0;  
             public static double kD = 0.0;  
         }
+
+        public static final double distanceBasedMultiplier = 1;
     }
 
     public static class Intake {
