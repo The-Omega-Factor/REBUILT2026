@@ -300,4 +300,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Optional<Pose2d> samplePoseAt(double timestampSeconds) {
         return super.samplePoseAt(Utils.fpgaToCurrentTime(timestampSeconds));
     }
+
+    public void setRotationZero() {
+        System.out.println("Set rotation zero");
+        Pose2d currentPose = this.getState().Pose;
+
+        currentPose = new Pose2d(currentPose.getX(), currentPose.getY(), new Rotation2d(0));
+    }
 }

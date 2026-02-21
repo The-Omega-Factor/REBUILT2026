@@ -77,12 +77,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setShooterVelocity(double speed) {
         //rotation per second
-        speed *= (6000/60);
+        speed *= (3000/60);
         shooterL.setControl(shooterRequest.withVelocity(speed));
     }
 
     public void setHopperVelocity(double speed) {
-        speed *= (6000/60);
+        speed *= (3000/60);
         hopper.setControl(hopperRequest.withVelocity(speed));
     }
 
