@@ -14,6 +14,8 @@ public class SetIntakeState extends Command {
         this.intakeSubsystem = intakeSubsystem;
         this.spinSpeed = spinSpeed;
         this.pivotPos = pivotPos;
+
+        addRequirements(intakeSubsystem);
     }
 
     @Override
