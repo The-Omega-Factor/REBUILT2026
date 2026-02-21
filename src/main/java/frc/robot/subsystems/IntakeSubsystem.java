@@ -54,9 +54,6 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotMM.MotionMagicAcceleration = 0;
         pivotMM.MotionMagicJerk = 0;
 
-        //TODO: Right Trigger = intake, Left Trigger = outtake and both triggers disable it
-
-
         //pivotConfig.MotionMagic = pivotMM;
         pivotConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         pivotConfig.Feedback.SensorToMechanismRatio = Constants.Intake.pivotGearRatio;

@@ -53,9 +53,6 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterL.getConfigurator().apply(shooterLConfig);
         shooterL.setNeutralMode(NeutralModeValue.Coast);
 
-        //TODO: Set X to toggle on and off the shooter
-        //TODO: set Left JoystickY to hopper
-
         shooterRConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.shootersStatorAmpsLimit;
         shooterRConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         shooterRConfig.CurrentLimits.SupplyCurrentLimit = 45;

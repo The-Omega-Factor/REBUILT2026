@@ -85,12 +85,22 @@ public class RobotContainer {
 
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
-        () -> notSwerveController.getLeftY(), 
-        () -> notSwerveController.getRightY()));
+        () -> notSwerveController.x().getAsBoolean() ? 1 : 0, 
+        () -> notSwerveController.getLeftY()));
 
         //intake
+        
         intake.setDefaultCommand(new SetIntakeState(intake, 
-        () -> notSwerveController.getLeftX(),
+        () -> {
+            double right = notSwerveController.getRightTriggerAxis();
+            double left = notSwerveController.getLeftTriggerAxis();
+
+            if (right >= 0.5 && left >= 0.5) return 0.0;
+            if (right > 0.1) return 1;
+            if (left > 0.1) return -1;
+
+            return 0.0;
+        },
         //Change this line (the division by a 100)
         () -> notSwerveController.getRightX()/100 + intake.getPivotPosition()));
     }
