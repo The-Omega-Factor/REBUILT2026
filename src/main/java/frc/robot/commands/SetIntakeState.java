@@ -5,13 +5,15 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class SpinIntake extends Command {
+public class SetIntakeState extends Command {
     private final IntakeSubsystem intakeSubsystem;
     private final DoubleSupplier spinSpeed;
+    private final DoubleSupplier pivotPos;
 
-    public SpinIntake(IntakeSubsystem intakeSubsystem, DoubleSupplier spinSpeed) {
+    public SetIntakeState(IntakeSubsystem intakeSubsystem, DoubleSupplier spinSpeed, DoubleSupplier pivotPos) {
         this.intakeSubsystem = intakeSubsystem;
         this.spinSpeed = spinSpeed;
+        this.pivotPos = pivotPos;
     }
 
     @Override
@@ -22,6 +24,7 @@ public class SpinIntake extends Command {
     @Override
     public void execute() {
         intakeSubsystem.setIntakeSpinSpeed(spinSpeed.getAsDouble());
+        intakeSubsystem.setPivotPosition(pivotPos.getAsDouble());
     }
 
     @Override
@@ -32,6 +35,7 @@ public class SpinIntake extends Command {
     @Override
     public void end(boolean interrupted) {
         intakeSubsystem.setIntakeSpinSpeed(0);
+        intakeSubsystem.setPivotPosition(intakeSubsystem.getPivotPosition());
         System.out.println("Stopping intake");
     }
 }

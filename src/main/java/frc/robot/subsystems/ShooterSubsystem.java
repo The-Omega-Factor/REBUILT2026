@@ -80,4 +80,9 @@ public class ShooterSubsystem extends SubsystemBase {
         speed *= (6000/60);
         hopper.setControl(hopperRequest.withVelocity(speed));
     }
+
+    //TODO: Finished this method
+    public double distanceBasedCalculator() {
+        return 0.0;
+    }
 }

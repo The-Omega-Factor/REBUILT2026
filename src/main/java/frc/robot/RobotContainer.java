@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
-import frc.robot.commands.SpinIntake;
+import frc.robot.commands.SetIntakeState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -89,8 +89,13 @@ public class RobotContainer {
         () -> notSwerveController.getLeftY(), 
         () -> notSwerveController.getRightY()));
 
-        intake.setDefaultCommand(new SpinIntake(intake, 
-        () -> notSwerveController.getLeftX()));
+        //intake
+
+
+        intake.setDefaultCommand(new SetIntakeState(intake, 
+        () -> notSwerveController.getLeftX(),
+        //Change this line (the division by a 100)
+        () -> notSwerveController.getRightX()/100 + intake.getPivotPosition()));
     }
 
     public Command getAutonomousCommand() {
