@@ -96,8 +96,8 @@ public class RobotContainer {
             double left = notSwerveController.getLeftTriggerAxis();
 
             if (right >= 0.5 && left >= 0.5) return 0.0;
-            if (right > 0.1) return 1;
-            if (left > 0.1) return -1;
+            if (right > 0.1) return 60;
+            if (left > 0.1) return -60;
 
             return 0.0;
         },
