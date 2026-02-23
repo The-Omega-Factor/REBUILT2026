@@ -63,6 +63,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterR.setControl(new Follower(shooterL.getDeviceID(), MotorAlignmentValue.Opposed));
 
         hopperConfig.Slot0.kP = Constants.Shooter.HopperPIDs.kP;
+        hopperConfig.Slot0.kS = Constants.Shooter.HopperPIDs.kS;
+        hopperConfig.Slot0.kV = Constants.Shooter.HopperPIDs.kV;
+        hopperConfig.Slot0.kD = Constants.Shooter.HopperPIDs.kD;
+
         hopperConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         hopperConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.hopperGearRatio;
 
@@ -100,5 +104,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public String getShooterMode() {
         return shooterMode;
+    }
+
+    public double getHopperVelocity() {
+        return hopper.getVelocity().getValueAsDouble();
     }
 }

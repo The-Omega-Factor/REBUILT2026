@@ -29,6 +29,7 @@ public class ShootAndHopper extends Command {
         // Send velocity in RPS
         shooterSubsystem.setShooterVelocity(shooterSpeed.getAsDouble());
         shooterSubsystem.setHopperVelocity(hopperSpeed.getAsDouble());
+        System.out.println("Hopper speed:" + shooterSubsystem.getHopperVelocity());
     }
 
     @Override

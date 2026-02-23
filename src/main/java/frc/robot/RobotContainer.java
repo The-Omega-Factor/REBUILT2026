@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -90,7 +91,7 @@ public class RobotContainer {
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> notSwerveController.x().getAsBoolean() ? 1 : 0, 
-        () -> notSwerveController.getLeftY()));
+        () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), 0.05)));
 
         //intake
         
@@ -105,8 +106,7 @@ public class RobotContainer {
 
             return 0.0;
         },
-        //Change this line (the division by a 100)
-        () -> notSwerveController.getRightX()/100 + intake.getPivotPosition()));
+        () -> notSwerveController.getRightX() * 2 + intake.getPivotPosition()));
     }
 
     public Command getAutonomousCommand() {

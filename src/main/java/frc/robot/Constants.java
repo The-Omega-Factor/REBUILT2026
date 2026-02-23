@@ -36,8 +36,8 @@ public class Constants {
         }
 
         public static class HopperPIDs {
-            public static double kP = 0.5; 
-            public static double kS = 0.0;  
+            public static double kP = 0.1; 
+            public static double kS = 0.4;  
             public static double kV = 0.0;  
             public static double kD = 0.0;  
         }
