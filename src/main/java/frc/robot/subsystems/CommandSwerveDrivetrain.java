@@ -229,6 +229,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
          * Otherwise, only check and apply the operator perspective if the DS is disabled.
          * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
          */
+
+         // NOTE:
+        // This will override any manual call to setOperatorPerspectiveForward()
+        // once the robot becomes disabled. This is intentional — operator
+        // perspective is treated as temporary and re-derived from alliance
+        // state on each disable.
+        
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
@@ -302,9 +309,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void setRotationZero() {
-        System.out.println("Set rotation zero");
-        Pose2d currentPose = this.getState().Pose;
-
-        currentPose = new Pose2d(currentPose.getX(), currentPose.getY(), new Rotation2d(0));
+        System.out.println("Set new field centric");
+        Rotation2d currentPose = this.getState().Pose.getRotation();
+        setOperatorPerspectiveForward(currentPose);
     }
 }

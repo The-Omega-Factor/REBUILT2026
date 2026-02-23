@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
-import frc.robot.commands.ZeroHeading;
+import frc.robot.commands.SetOperatorForward;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -71,7 +71,8 @@ public class RobotContainer {
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
-        joystick.x().whileTrue(new ZeroHeading(drivetrain));
+        // TODO: joystick.x().onTrue(Commands.runOnce(drivetrain::setRotationZero, drivetrain));
+        joystick.x().onTrue(new SetOperatorForward(drivetrain));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

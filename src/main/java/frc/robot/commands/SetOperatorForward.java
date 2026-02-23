@@ -3,10 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class ZeroHeading extends Command {
+public class SetOperatorForward extends Command {
     private final CommandSwerveDrivetrain drivetrain;
     
-    public ZeroHeading(CommandSwerveDrivetrain drivetrain) {
+    public SetOperatorForward(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
 
         addRequirements(drivetrain);
@@ -18,7 +18,7 @@ public class ZeroHeading extends Command {
     }
 
     @Override
-    public void execute(){}
+    public void execute(){} 
 
     @Override
     public boolean isFinished() {
