@@ -10,10 +10,15 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -130,6 +135,36 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        RobotConfig config;
+
+        try {
+            config = RobotConfig.fromGUISettings();
+
+            AutoBuilder.configure(
+                this::getPose, 
+                this::resetPose, 
+                this::getRobotRelativeSpeeds, 
+                (speeds, feedforwards) -> driveRobotRelative(speeds), 
+                new PPHolonomicDriveController(
+                    new PIDConstants(5.0, 0.0, 0.0), 
+                    new PIDConstants(5.0, 0.0, 0.0)), 
+                config, 
+                () -> {
+                    Optional<Alliance> alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+
+                    return false;
+                }, 
+                this
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
     }
 
     /**
@@ -312,5 +347,23 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         System.out.println("Set new field centric");
         Rotation2d currentPose = this.getState().Pose.getRotation();
         setOperatorPerspectiveForward(currentPose);
+    }
+
+    public Pose2d getPose() {
+        return this.getState().Pose;
+    }
+
+    public void resetPose(Pose2d newPose) {
+        super.resetPose(newPose);
+    } 
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return this.getState().Speeds;
+    }
+
+    private final SwerveRequest.ApplyRobotSpeeds m_ApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
+
+    public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
+        setControl(m_ApplyRobotSpeeds.withSpeeds(chassisSpeeds));
     }
 }
