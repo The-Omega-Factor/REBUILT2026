@@ -346,10 +346,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public void setRotationZero() {
         System.out.println("Set new field centric");
         Rotation2d currentPose = this.getState().Pose.getRotation();
+        currentPose = currentPose.rotateBy(Rotation2d.fromDegrees(180));
         setOperatorPerspectiveForward(currentPose);
     }
 
     public Pose2d getPose() {
+        
         return this.getState().Pose;
     }
 
