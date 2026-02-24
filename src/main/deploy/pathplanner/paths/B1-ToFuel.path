@@ -61,7 +61,7 @@
   "eventMarkers": [
     {
       "name": "Collect Fuels",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 1.3859060402684569,
       "endWaypointRelativePos": null,
       "command": null
     }

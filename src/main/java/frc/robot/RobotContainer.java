@@ -7,10 +7,13 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -37,6 +40,7 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final SendableChooser<Command> autoChooser;
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -47,6 +51,11 @@ public class RobotContainer {
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
     public RobotContainer() {
+        NamedCommands.registerCommand("SetIntakeState", new SetIntakeState(intake, null, null));
+        NamedCommands.registerCommand("ShootAndHopper", new ShootAndHopper(shooter, null, null));
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+
         configureBindings();
     }
 
@@ -73,7 +82,7 @@ public class RobotContainer {
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
-        // TODO: joystick.x().onTrue(Commands.runOnce(drivetrain::setRotationZero, drivetrain));
+        // joystick.x().onTrue(Commands.runOnce(drivetrain::setRotationZero, drivetrain));
         joystick.x().onTrue(new SetOperatorForward(drivetrain));
 
         // Run SysId routines when holding back/start and X/Y.
