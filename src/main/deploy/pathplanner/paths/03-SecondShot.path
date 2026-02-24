@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.8,
-        "y": 5.0
+        "x": 0.5,
+        "y": 5.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.4579798566743305,
-        "y": 5.93969262078591
+        "x": 0.9869039784995864,
+        "y": 5.778345229182368
       },
       "isLocked": false,
-      "linkedName": "B1-03-AtFuel"
+      "linkedName": "B1-02-AtDepot"
     },
     {
       "anchor": {
-        "x": 3.2911979166728687,
-        "y": 7.473831845239976
+        "x": 1.3988616071428572,
+        "y": 5.98
       },
       "prevControl": {
-        "x": 8.791197916672868,
-        "y": 7.4738318452399755
+        "x": 0.8869070454311593,
+        "y": 6.2206012988642785
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "B1-02-ShootPosition"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "01Shoot",
+      "name": "B101Shoot",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null
@@ -49,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -70.0
+    "rotation": -34.38753762152453
   },
   "reversed": false,
   "folder": "B1",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 178.53788784841166
   },
   "useDefaultConstraints": true
 }

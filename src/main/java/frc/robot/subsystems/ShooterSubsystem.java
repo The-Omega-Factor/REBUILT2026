@@ -109,4 +109,8 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getHopperVelocity() {
         return hopper.getVelocity().getValueAsDouble();
     }
+
+    public double getShooterVelocity() {
+        return shooterL.getVelocity().getValueAsDouble();
+    }
 }

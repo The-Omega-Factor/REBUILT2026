@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -50,10 +51,14 @@ public class RobotContainer {
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
     public RobotContainer() {
-        NamedCommands.registerCommand("00LowerIntake", new SetIntakeState(intake, null, null));
-        NamedCommands.registerCommand("01Shoot", new ShootAndHopper(shooter, null, null));
-        NamedCommands.registerCommand("02RaiseIntake", new ShootAndHopper(shooter, null, null));
+        NamedCommands.registerCommand("B100Intake", new ParallelCommandGroup(
+            new ShootAndHopper(shooter, () -> shooter.getShooterVelocity(), null),
+            new SetIntakeState(intake, null, null))
+        );
+        NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, null, null));
+        NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, null, null));
         
+
         autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();

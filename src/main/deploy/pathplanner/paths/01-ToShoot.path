@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "B1-02-ShootPosition"
+      "linkedName": "B1-01-ShootPosition"
     }
   ],
   "rotationTargets": [],
@@ -33,10 +33,26 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "01Shoot",
-      "waypointRelativePos": 0.9178082191780792,
+      "name": "RaiseIntake",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "B102RaiseIntake"
+        }
+      }
+    },
+    {
+      "name": "FirstShot",
+      "waypointRelativePos": 0.8780821917808218,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "B101Shoot"
+        }
+      }
     }
   ],
   "globalConstraints": {

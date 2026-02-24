@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "B100Intake"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
@@ -23,22 +29,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "02RaiseIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "01Shoot"
-                }
-              }
-            ]
+            "name": "B101Shoot"
           }
         },
         {
@@ -54,6 +47,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "B100Intake"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
@@ -62,26 +61,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "03-ToShoot"
+            "pathName": "03-SecondShot"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "02RaiseIntake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "01Shoot"
-                }
-              }
-            ]
+            "name": "RaiseIntake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
           }
         }
       ]

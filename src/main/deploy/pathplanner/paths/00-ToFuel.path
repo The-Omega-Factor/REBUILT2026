@@ -12,7 +12,7 @@
         "y": 7.6
       },
       "isLocked": false,
-      "linkedName": "B1-00-AtBeginning"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -33,10 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "00LowerIntake",
+      "name": "FirstIntake",
       "waypointRelativePos": 0.7438356164383558,
-      "endWaypointRelativePos": 1.0,
-      "command": null
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "B100Intake"
+        }
+      }
     }
   ],
   "globalConstraints": {
