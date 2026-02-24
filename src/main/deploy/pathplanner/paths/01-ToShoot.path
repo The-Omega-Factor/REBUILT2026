@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.8,
+        "y": 5.9
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.268007069069528,
+        "y": 7.856786088901421
+      },
+      "isLocked": false,
+      "linkedName": "B1-00-AtFuel"
+    },
+    {
+      "anchor": {
+        "x": 3.2911979166728687,
+        "y": 7.473831845239976
+      },
+      "prevControl": {
+        "x": 5.291116759369692,
+        "y": 7.455814558368834
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "B1-02-ShootPosition"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "01Shoot",
+      "waypointRelativePos": 0.9178082191780792,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -70.0
+  },
+  "reversed": false,
+  "folder": "B1",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}
