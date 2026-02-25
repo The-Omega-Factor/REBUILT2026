@@ -51,7 +51,7 @@ public class Constants {
         public static final double spinStatorAmpsLimit = 50;
 
         public static class SpinPIDs {
-            public static double kP = 0.5;
+            public static double kP = 0.3;
             public static double kV = 0.0;
             public static double kS = 0.0;
             public static double kI = 0.0; 
