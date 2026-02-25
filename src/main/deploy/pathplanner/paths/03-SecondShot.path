@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "B101Shoot",
+      "name": "B103Shoot",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null

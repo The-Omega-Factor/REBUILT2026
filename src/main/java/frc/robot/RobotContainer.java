@@ -57,7 +57,7 @@ public class RobotContainer {
         );
         NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, null, null));
         NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, null, null));
-        
+        NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, null, null));
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
