@@ -78,4 +78,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public void setPivotPosition(double position) {
         pivot.setControl(pivotRequest.withPosition(position));
     }
+
+    @Override
+    public void periodic() {}
 }

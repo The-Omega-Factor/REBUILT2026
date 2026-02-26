@@ -62,9 +62,7 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {
-        m_robotContainer.logPivotPosition();
-    }
+    public void teleopPeriodic() {}
 
     @Override
     public void teleopExit() {}
