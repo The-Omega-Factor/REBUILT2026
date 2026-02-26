@@ -3,8 +3,9 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "B1",
     "B2",
-    "B1"
+    "Simple Auto"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
