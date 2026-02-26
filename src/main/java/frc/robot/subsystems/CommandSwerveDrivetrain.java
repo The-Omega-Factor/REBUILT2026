@@ -60,8 +60,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.FieldCentric m_fieldCentric =
         new SwerveRequest.FieldCentric()
             .withDeadband(0.0)
-            .withRotationalDeadband(0.0)
-            .withDriveRequestType(SwerveRequest.DriveRequestType.OpenLoopVoltage);
+            .withRotationalDeadband(0.0);
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
