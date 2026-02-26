@@ -36,16 +36,6 @@ public class AlignToPose extends Command {
 
         Pose2d currentPose = drivetrain.getPose();
 
-        double xSpeed = xController.calculate(
-                currentPose.getX(),
-                targetPose.getX()
-        );
-
-        double ySpeed = yController.calculate(
-                currentPose.getY(),
-                targetPose.getY()
-        );
-
         double rotationSpeed = thetaController.calculate(
                 currentPose.getRotation().getRadians(),
                 targetPose.getRotation().getRadians()
@@ -53,25 +43,19 @@ public class AlignToPose extends Command {
 
         drivetrain.setControl(
                 driveRequest
-                        .withVelocityX(xSpeed)
-                        .withVelocityY(ySpeed)
                         .withRotationalRate(rotationSpeed)
         );
     }
 
     @Override
     public boolean isFinished() {
-        return xController.atSetpoint()
-                && yController.atSetpoint()
-                && thetaController.atSetpoint();
+        return thetaController.atSetpoint();
     }
 
     @Override
     public void end(boolean interrupted) {
         drivetrain.setControl(
                 driveRequest
-                        .withVelocityX(0)
-                        .withVelocityY(0)
                         .withRotationalRate(0)
         );
     }
