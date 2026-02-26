@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
+import frc.robot.commands.AlignToPose;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
 import frc.robot.generated.TunerConstants;
@@ -99,7 +101,16 @@ public class RobotContainer {
 
         // Reset the field-centric heading on left bumper press.
         //TODO: test this
-        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.leftBumper().onTrue(
+        new AlignToPose(
+                drivetrain,
+                new Pose2d(
+                        2.0,
+                        4.5,
+                        Rotation2d.fromDegrees(180)
+                )
+        )
+);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
