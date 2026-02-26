@@ -70,8 +70,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), 0.05) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.05) * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
@@ -98,6 +98,7 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on left bumper press.
+        //TODO: test this
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
@@ -111,12 +112,12 @@ public class RobotContainer {
         
         intake.setDefaultCommand(new SetIntakeState(intake, 
         () -> {
-            double right = notSwerveController.getRightTriggerAxis();
-            double left = notSwerveController.getLeftTriggerAxis();
+            double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), 0.05);
+            double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), 0.05);
 
             return (right - left) * 40;
         },
-        () -> notSwerveController.getRightX() * 2 + intake.getPivotPosition()));
+        () -> MathUtil.applyDeadband(notSwerveController.getRightX(), 0.05) * 2 + intake.getPivotPosition()));
     }
 
     public Command getAutonomousCommand() {
