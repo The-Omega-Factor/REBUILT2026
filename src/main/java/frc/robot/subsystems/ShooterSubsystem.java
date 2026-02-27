@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         shooterLConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.shootersStatorAmpsLimit;
         shooterLConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        shooterLConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        shooterLConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.shootersCurrentLimit;
         shooterLConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         shooterL.getConfigurator().apply(shooterLConfig);
@@ -55,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         shooterRConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.shootersStatorAmpsLimit;
         shooterRConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        shooterRConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        shooterRConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.shootersCurrentLimit;
         shooterRConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         shooterR.getConfigurator().apply(shooterRConfig);
@@ -72,7 +72,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         hopperConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.hopperStatorAmpsLimit;
         hopperConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        hopperConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        hopperConfig.CurrentLimits.SupplyCurrentLimit = Constants.Shooter.hopperCurrentLimit;
         hopperConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         hopper.getConfigurator().apply(hopperConfig);

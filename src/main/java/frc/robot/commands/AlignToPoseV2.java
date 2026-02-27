@@ -36,7 +36,7 @@ public class AlignToPoseV2 extends Command {
     @Override
     public void initialize() {
         thetaController.reset();
-        thetaController.setTolerance(Math.toRadians(5));
+        thetaController.setTolerance(Math.toRadians(Constants.Swerve.angularTolerance));
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
     }
 

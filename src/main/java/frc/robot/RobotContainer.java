@@ -34,6 +34,7 @@ public class RobotContainer {
 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private final double deadband = Constants.Controllers.deadband;
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -45,10 +46,10 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
     private final SendableChooser<Command> autoChooser;
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick = new CommandXboxController(Constants.Controllers.swerveID);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final CommandXboxController notSwerveController = new CommandXboxController(1);
+    public final CommandXboxController notSwerveController = new CommandXboxController(Constants.Controllers.notSwerveID);
 
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
@@ -73,8 +74,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), 0.05) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), 0.05) * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), deadband) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), deadband) * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
@@ -106,8 +107,8 @@ public class RobotContainer {
         new AlignToPose(
                 drivetrain,
                 new Pose2d(
-                        4.14,
-                        4,
+                        Constants.Field.blueX,
+                        Constants.Field.redX,
                         Rotation2d.fromDegrees(180)
                 )
         )
@@ -117,19 +118,22 @@ public class RobotContainer {
 
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
-        () -> notSwerveController.x().getAsBoolean() ? 1 : 0, 
-        () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), 0.05)));
+        () -> notSwerveController.x().getAsBoolean() ? Constants.Shooter.shooterSpeedMultiplier : 0, 
+        () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), deadband)));
 
         //intake
         
         intake.setDefaultCommand(new SetIntakeState(intake, 
         () -> {
-            double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), 0.05);
-            double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), 0.05);
+            double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband);
+            double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband);
 
-            return (right - left) * 80;
+            return (right - left) * Constants.Intake.spinSpeedMultiplier;
         },
-        () -> MathUtil.applyDeadband(notSwerveController.getRightX(), 0.05) * 2 + intake.getPivotPosition()));
+        () -> 
+        MathUtil.applyDeadband(notSwerveController.getRightX(), deadband) * Constants.Intake.pivotSpeedMultiplier 
+        + intake.getPivotPosition())
+        );
     }
 
     public Command getAutonomousCommand() {

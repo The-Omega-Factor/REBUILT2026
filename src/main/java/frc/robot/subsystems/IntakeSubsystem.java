@@ -40,7 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         spinConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.spinStatorAmpsLimit;
         spinConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        spinConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        spinConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.spinCurrentLimit;
         spinConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         spin.getConfigurator().apply(spinConfig);
@@ -60,7 +60,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         pivotConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.pivotStatorAmpsLimit;
         pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        pivotConfig.CurrentLimits.SupplyCurrentLimit = 45;
+        pivotConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.pivotCurrentLimit;
         pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         pivot.getConfigurator().apply(pivotConfig);
