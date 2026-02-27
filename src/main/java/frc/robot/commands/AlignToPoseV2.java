@@ -15,7 +15,11 @@ public class AlignToPoseV2 extends Command {
     public double targetY;
 
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
-    private final PIDController thetaController = new PIDController(4.0, 0.0, 0.0);
+    private final PIDController thetaController = new PIDController(
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kP, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kI, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kD
+        );
     private double targetHeading;
 
     private Pose2d currentPose;
