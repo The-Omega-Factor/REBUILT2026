@@ -125,7 +125,7 @@ public class RobotContainer {
             double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), 0.05);
             double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), 0.05);
 
-            return (right - left) * 40;
+            return (right - left) * 80;
         },
         () -> MathUtil.applyDeadband(notSwerveController.getRightX(), 0.05) * 2 + intake.getPivotPosition()));
     }
