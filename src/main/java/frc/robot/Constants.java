@@ -69,6 +69,8 @@ public class Constants {
     }
 
     public static class Swerve {
+        public static final double maxOmega = 6.0; //rad/s
+
         public static class AutoBuilderPIDs {
             public static class Translational {
                 public static final double kP = 0.5;
