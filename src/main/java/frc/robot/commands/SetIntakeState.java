@@ -2,7 +2,9 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class SetIntakeState extends Command {
@@ -25,8 +27,11 @@ public class SetIntakeState extends Command {
 
     @Override
     public void execute() {
+        double targetPos = pivotPos.getAsDouble();
+        //targetPos = MathUtil.clamp(targetPos, Constants.Intake.pivotLowerLimit, Constants.Intake.pivotUpperLimit);
+
         intakeSubsystem.setIntakeSpinSpeed(spinSpeed.getAsDouble());
-        intakeSubsystem.setPivotPosition(pivotPos.getAsDouble());
+        intakeSubsystem.setPivotPosition(targetPos);
     }
 
     @Override

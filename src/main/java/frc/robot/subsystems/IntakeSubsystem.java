@@ -59,9 +59,14 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotConfig.Feedback.SensorToMechanismRatio = Constants.Intake.pivotGearRatio;
 
         pivotConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.pivotStatorAmpsLimit;
-        pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         pivotConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.pivotCurrentLimit;
+        pivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         pivotConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Intake.pivotUpperLimit;
+        pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Intake.pivotLowerLimit;
+        //pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        //pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
 
         pivot.getConfigurator().apply(pivotConfig);
         pivot.setNeutralMode(NeutralModeValue.Brake);

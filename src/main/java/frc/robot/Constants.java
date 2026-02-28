@@ -68,6 +68,18 @@ public class Constants {
         public static final double pivotCurrentLimit = 45;
         public static final double pivotSpeedMultiplier = 2;
 
+        /*
+        WARNING: USE "System.out.println(intakeSubsystem.getPivotPosition());" to in
+        SetIntakeState.java within the "public void execute()" method to tune these 
+        values before uncommenting the limiter lines.
+        
+        The limiter lines are in: 
+        1. IntakeSubsystem.java - ~line 68-69 in the "public IntakeSystem()" constructor
+        2. SetIntakeState.java - ~line 31 in the "public void execute()" method
+         */
+        public static final double pivotLowerLimit = 0;
+        public static final double pivotUpperLimit = 0;
+
         public static class pivotPIDs {
             public static double kP = 0.5;
             public static double kD = 0.0;
@@ -107,7 +119,5 @@ public class Constants {
         public static final double y = 4;
         public static final double redX = 0;
         public static final double blueX = 0;
-
-
-    }
+  }
 }
