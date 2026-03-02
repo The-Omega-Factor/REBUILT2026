@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Test Command"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Another Position"
