@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
+import frc.robot.Constants.Swerve;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
 import frc.robot.generated.TunerConstants;
@@ -62,6 +63,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
         NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
         NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
+        NamedCommands.registerCommand("Test Command", Commands.runOnce(()-> {System.out.println("Test success");}, drivetrain));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData(autoChooser);
