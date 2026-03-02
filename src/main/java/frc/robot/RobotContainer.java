@@ -12,9 +12,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
-import frc.robot.commands.AlignToPose;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
 import frc.robot.generated.TunerConstants;
@@ -65,6 +64,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, null, null));
 
         autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData(autoChooser);
 
         configureBindings();
     }
@@ -121,8 +121,9 @@ public class RobotContainer {
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> {
-            if (notSwerveController.x().getAsBoolean()) return 1.1 * Constants.Shooter.shooterSpeedMultiplier;
-            if (notSwerveController.a().getAsBoolean()) return .95 * Constants.Shooter.shooterSpeedMultiplier;
+            SmartDashboard.putBoolean("x", notSwerveController.x().getAsBoolean());
+            if (notSwerveController.x().getAsBoolean()) return 1.2 * Constants.Shooter.shooterSpeedMultiplier;
+            if (notSwerveController.a().getAsBoolean()) return 1 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
 
             return 0.0;
