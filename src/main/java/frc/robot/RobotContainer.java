@@ -105,22 +105,28 @@ public class RobotContainer {
 
         // Reset the field-centric heading on left bumper press.
         //TODO: test this
-        joystick.leftBumper().onTrue(
-        new AlignToPose(
-                drivetrain,
-                new Pose2d(
-                        Constants.Field.blueX,
-                        Constants.Field.redX,
-                        Rotation2d.fromDegrees(180)
-                )
-        )
-);
+        //joystick.leftBumper().onTrue(
+        //new AlignToPose(
+        //        drivetrain,
+        //        new Pose2d(
+        //                Constants.Field.blueX,
+        //                Constants.Field.redX,
+        //                Rotation2d.fromDegrees(180)
+        //        )
+        //)
+        //);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
-        () -> notSwerveController.x().getAsBoolean() ? Constants.Shooter.shooterSpeedMultiplier : 0, 
+        () -> {
+            if (notSwerveController.x().getAsBoolean()) return 1.1 * Constants.Shooter.shooterSpeedMultiplier;
+            if (notSwerveController.a().getAsBoolean()) return .95 * Constants.Shooter.shooterSpeedMultiplier;
+            if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
+
+            return 0.0;
+        }, 
         () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), deadband)));
 
         //intake
