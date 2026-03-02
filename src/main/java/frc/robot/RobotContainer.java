@@ -56,12 +56,12 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("B100Intake", new ParallelCommandGroup(
-            new ShootAndHopper(shooter, () -> shooter.getShooterVelocity(), null),
-            new SetIntakeState(intake, null, null))
+            new ShootAndHopper(shooter, () -> shooter.getShooterVelocity(), () -> {return 0.0;}),
+            new SetIntakeState(intake, () -> {return 0.0;}, () -> {return intake.getPivotPosition();}))
         );
-        NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, null, null));
-        NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, null, null));
-        NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, null, null));
+        NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
+        NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
+        NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData(autoChooser);
