@@ -45,23 +45,33 @@ public class AlignToPoseV2 extends Command {
     }
 
     @Override
-    public void execute() {
-        currentPose = drivetrain.getPose();
+public void execute() {
+    currentPose = drivetrain.getPose();
 
-        currentX = currentPose.getX();
-        currentY = currentPose.getY();
-        currentHeading = MathUtil.angleModulus(currentPose.getRotation().getRadians());
+    currentX = currentPose.getX();
+    currentY = currentPose.getY();
+    currentHeading = MathUtil.angleModulus(currentPose.getRotation().getRadians());
 
-        targetHeading = Math.atan2(targetY - currentY, targetX - currentX);
-        error = MathUtil.clamp(
-            thetaController.calculate(currentHeading, targetHeading),
-            -Constants.Swerve.maxOmega,
-            Constants.Swerve.maxOmega
-            );
+    targetHeading = Math.atan2(targetY - currentY, targetX - currentX);
 
-        drivetrain.setControl(driveRequest.withRotationalRate(error));
+    double pidOutput = thetaController.calculate(currentHeading, targetHeading);
+
+    // Clamp to max rotational speed
+    pidOutput = MathUtil.clamp(
+        pidOutput,
+        -Constants.Swerve.maxOmega,
+        Constants.Swerve.maxOmega
+    );
+
+    // Apply minimum threshold to prevent oscillation
+    if (Math.abs(pidOutput) < Constants.Swerve.minOmega) {
+        pidOutput = 0;
     }
 
+    drivetrain.setControl(
+        driveRequest.withRotationalRate(pidOutput)
+    );
+}
     @Override
     public boolean isFinished() {
         return thetaController.atSetpoint();

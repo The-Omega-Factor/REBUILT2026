@@ -89,6 +89,7 @@ public class Constants {
 
     public static class Swerve {
         public static final double maxOmega = 6.0; //rad/s
+        public static final double minOmega = 0.0;
         public static final double angularTolerance = 5; //rad
 
         public static class AutoBuilderPIDs {
