@@ -65,6 +65,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Test Command", Commands.runOnce(()-> {System.out.println("Test success-------------------------------------------------------------------");}));
 
         autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser.addOption("Super simple auto", new ShootAndHopper(shooter, () -> {return 1 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return 0.0;}, false));
         SmartDashboard.putData(autoChooser);
 
         configureBindings();
