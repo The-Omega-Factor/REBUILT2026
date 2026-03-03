@@ -11,9 +11,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Test Command"
+            "waitTime": 3.0
           }
         },
         {
