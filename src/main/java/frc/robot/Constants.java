@@ -55,7 +55,7 @@ public class Constants {
         public static final double spinGearRatio = 20/20;
         public static final double spinStatorAmpsLimit = 50;
         public static final double spinCurrentLimit = 45;
-        public static final double spinSpeedMultiplier = 80;
+        public static final double spinSpeedMultiplier = 67;
         public static final double spinErrorTolerance = 1e-2;
 
         public static class SpinPIDs {

@@ -130,7 +130,7 @@ public class RobotContainer {
             return 0.0;
         }, 
         () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), deadband),
-        true)
+        false)
         );
 
         //intake
