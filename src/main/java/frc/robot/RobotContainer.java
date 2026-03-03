@@ -109,7 +109,7 @@ public class RobotContainer {
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> {
-            if (notSwerveController.x().getAsBoolean()) return 1.2 * Constants.Shooter.shooterSpeedMultiplier;
+            if (notSwerveController.x().getAsBoolean()) return 1.36 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.a().getAsBoolean()) return 1 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
 
