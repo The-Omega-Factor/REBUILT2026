@@ -62,7 +62,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
-        NamedCommands.registerCommand("Test Command", Commands.runOnce(()-> {System.out.println("Test success");}));
+        NamedCommands.registerCommand("Test Command", Commands.runOnce(()-> {System.out.println("Test success-------------------------------------------------------------------");}));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData(autoChooser);
