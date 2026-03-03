@@ -104,19 +104,6 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // Reset the field-centric heading on left bumper press.
-        //TODO: test this
-        //joystick.leftBumper().onTrue(
-        //new AlignToPose(
-        //        drivetrain,
-        //        new Pose2d(
-        //                Constants.Field.blueX,
-        //                Constants.Field.redX,
-        //                Rotation2d.fromDegrees(180)
-        //        )
-        //)
-        //);
-
         drivetrain.registerTelemetry(logger::telemeterize);
 
         //shooter
