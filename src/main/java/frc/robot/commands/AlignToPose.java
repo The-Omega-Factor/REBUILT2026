@@ -27,8 +27,6 @@ public class AlignToPose extends Command {
     private double currentY;
     private double currentHeading;
 
-    private double error;
-
     public AlignToPose(CommandSwerveDrivetrain drivetrain, double targetX, double targetY) {
         this.drivetrain = drivetrain;
         this.targetX = targetX;
