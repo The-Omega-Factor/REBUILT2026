@@ -84,6 +84,10 @@ public class IntakeSubsystem extends SubsystemBase {
         pivot.setControl(pivotRequest.withPosition(position));
     }
 
+    public double getSpinSpeed() {
+        return spin.getVelocity().getValueAsDouble();
+    }
+
     @Override
     public void periodic() {}
 }

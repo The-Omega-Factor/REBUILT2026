@@ -1,52 +1,77 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class AlignToPose extends Command {
+    public CommandSwerveDrivetrain drivetrain;
+    public double targetX;
+    public double targetY;
 
-    private final CommandSwerveDrivetrain drivetrain;
-    private final Pose2d targetPose;
+    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
+    private final PIDController thetaController = new PIDController(
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kP, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kI, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kD
+        );
+    private double targetHeading;
 
-    private final PIDController xController = new PIDController(3.0, 0.0, 0.0);
-    private final PIDController yController = new PIDController(3.0, 0.0, 0.0);
-    private final PIDController thetaController = new PIDController(4.0, 0.0, 0.0);
+    private Pose2d currentPose;
+    private double currentX;
+    private double currentY;
+    private double currentHeading;
 
-    private final SwerveRequest.FieldCentric driveRequest =
-            new SwerveRequest.FieldCentric();
+    private double error;
 
-    public AlignToPose(CommandSwerveDrivetrain drivetrain, Pose2d targetPose) {
+    public AlignToPose(CommandSwerveDrivetrain drivetrain, double targetX, double targetY) {
         this.drivetrain = drivetrain;
-        this.targetPose = targetPose;
+        this.targetX = targetX;
+        this.targetY = targetY;
 
         addRequirements(drivetrain);
-
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-        xController.setTolerance(0.05);
-        yController.setTolerance(0.05);
-        thetaController.setTolerance(Math.toRadians(2));
     }
 
     @Override
-    public void execute() {
-
-        Pose2d currentPose = drivetrain.getPose();
-
-        double rotationSpeed = thetaController.calculate(
-                currentPose.getRotation().getRadians(),
-                targetPose.getRotation().getRadians()
-        );
-
-        drivetrain.setControl(
-                driveRequest
-                        .withRotationalRate(rotationSpeed)
-        );
+    public void initialize() {
+        thetaController.reset();
+        thetaController.setTolerance(Math.toRadians(Constants.Swerve.angularTolerance));
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
+    @Override
+public void execute() {
+    currentPose = drivetrain.getPose();
+
+    currentX = currentPose.getX();
+    currentY = currentPose.getY();
+    currentHeading = MathUtil.angleModulus(currentPose.getRotation().getRadians());
+
+    targetHeading = Math.atan2(targetY - currentY, targetX - currentX);
+
+    double pidOutput = thetaController.calculate(currentHeading, targetHeading);
+
+    // Clamp to max rotational speed
+    pidOutput = MathUtil.clamp(
+        pidOutput,
+        -Constants.Swerve.maxOmega,
+        Constants.Swerve.maxOmega
+    );
+
+    // Apply minimum threshold to prevent oscillation
+    if (Math.abs(pidOutput) < Constants.Swerve.minOmega) {
+        pidOutput = 0;
+    }
+
+    drivetrain.setControl(
+        driveRequest.withRotationalRate(pidOutput)
+    );
+}
     @Override
     public boolean isFinished() {
         return thetaController.atSetpoint();
@@ -54,9 +79,11 @@ public class AlignToPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.setControl(
-                driveRequest
-                        .withRotationalRate(0)
-        );
+        drivetrain.setControl(driveRequest.withRotationalRate(0));
+    }
+
+    public void setTarget(double x, double y) {
+        this.targetX = x;
+        this.targetY = y;
     }
 }

@@ -16,33 +16,35 @@ public class Constants {
     public static CANBus canbus = new CANBus("SwerveBase");
 
     public static class Shooter {
-        public static int shooterLID = 0;
-        public static int shooterRID = 14;
-        public static int hopperID = 5;
+        public static final int shooterLID = 0;
+        public static final int shooterRID = 14;
+        public static final int hopperID = 5;
 
-        public static double shootersGearRatio = 25/20;
-        public static double shootersStatorAmpsLimit = 100;
-        public static double shootersCurrentLimit = 45;
-        public static double shooterSpeedMultiplier = 1;
+        public static final double shootersGearRatio = 25/20;
+        public static final double shootersStatorAmpsLimit = 100;
+        public static final double shootersCurrentLimit = 45;
+        public static final double shooterSpeedMultiplier = 1;
+        public static final double shooterErrorTolerance = 1e-2;
         
-        public static double hopperGearRatio = 20/35;
-        public static double hopperStatorAmpsLimit = 67;
-        public static double hopperCurrentLimit = 45;
+        public static final double hopperGearRatio = 20/35;
+        public static final double hopperStatorAmpsLimit = 67;
+        public static final double hopperCurrentLimit = 45;
+        public static final double hopperErrorTolerance = 1e-2;
 
         public static class ShooterPIDS {
-            public static double kV = 0.5;
-            public static double kP = 0.5;
-            public static double kS = 0.0;
-            public static double kA = 0.0; 
-            public static double kI = 0.0;
-            public static double kD = 0.0;
+            public static final double kV = 0.5;
+            public static final double kP = 0.5;
+            public static final double kS = 0.0;
+            public static final double kA = 0.0; 
+            public static final double kI = 0.0;
+            public static final double kD = 0.0;
         }
 
         public static class HopperPIDs {
-            public static double kP = 0.0; 
-            public static double kS = 0.4;  
-            public static double kV = 0.1;  
-            public static double kD = 0.0;  
+            public static final double kP = 0.0; 
+            public static final double kS = 0.4;  
+            public static final double kV = 0.1;  
+            public static final double kD = 0.0;  
         }
 
         public static final double distanceBasedMultiplier = 1;
@@ -54,12 +56,13 @@ public class Constants {
         public static final double spinStatorAmpsLimit = 50;
         public static final double spinCurrentLimit = 45;
         public static final double spinSpeedMultiplier = 80;
+        public static final double spinErrorTolerance = 1e-2;
 
         public static class SpinPIDs {
-            public static double kP = 0.3;
-            public static double kV = 0.0;
-            public static double kS = 0.0;
-            public static double kI = 0.0; 
+            public static final double kP = 0.3;
+            public static final double kV = 0.0;
+            public static final double kS = 0.0;
+            public static final double kI = 0.0; 
         }
 
         public static final int pivotID = 24;
@@ -67,6 +70,7 @@ public class Constants {
         public static final double pivotStatorAmpsLimit = 50;
         public static final double pivotCurrentLimit = 45;
         public static final double pivotSpeedMultiplier = 2;
+        public static final double pivotErrorTolerance = 1e-2;
 
         /*
         WARNING: USE "System.out.println(intakeSubsystem.getPivotPosition());" to in
@@ -81,9 +85,9 @@ public class Constants {
         public static final double pivotUpperLimit = 0;
 
         public static class pivotPIDs {
-            public static double kP = 0.5;
-            public static double kD = 0.0;
-            public static double kG = 0.0;
+            public static final double kP = 0.5;
+            public static final double kD = 0.0;
+            public static final double kG = 0.0;
         }
     }
 
