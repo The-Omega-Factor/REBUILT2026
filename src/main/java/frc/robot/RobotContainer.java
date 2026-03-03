@@ -152,4 +152,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
+
+    public void addGamepadsTelemetry() {
+        SmartDashboard.putNumber("Swerve Controller Left Y", joystick.getLeftY());
+        SmartDashboard.putNumber("", MaxAngularRate);
+    }
 }
