@@ -122,7 +122,6 @@ public class RobotContainer {
         //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> {
-            SmartDashboard.putBoolean("x", notSwerveController.x().getAsBoolean());
             if (notSwerveController.x().getAsBoolean()) return 1.2 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.a().getAsBoolean()) return 1 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
@@ -154,7 +153,22 @@ public class RobotContainer {
     }
 
     public void addGamepadsTelemetry() {
-        SmartDashboard.putNumber("Swerve Controller Left Y", joystick.getLeftY());
-        SmartDashboard.putNumber("", MaxAngularRate);
+        SmartDashboard.putNumber("S-LeftY", joystick.getLeftY());
+        SmartDashboard.putNumber("S-LeftX", joystick.getLeftX());
+        SmartDashboard.putNumber("S-RightX", joystick.getRightX());
+        
+        SmartDashboard.putBoolean("S-A", joystick.a().getAsBoolean());
+        SmartDashboard.putBoolean("S-B", joystick.b().getAsBoolean());
+        SmartDashboard.putBoolean("S-X", joystick.x().getAsBoolean());
+        SmartDashboard.putBoolean("S-Y", joystick.y().getAsBoolean());
+
+        SmartDashboard.putNumber("N-LeftY", notSwerveController.getLeftY());
+        SmartDashboard.putNumber("N-RightX", notSwerveController.getRightX());
+        SmartDashboard.putNumber("N-LeftTrigger", notSwerveController.getLeftTriggerAxis());
+        SmartDashboard.putNumber("N-LeftTrigger", notSwerveController.getRightTriggerAxis());
+
+        SmartDashboard.putBoolean("N-A", notSwerveController.a().getAsBoolean());
+        SmartDashboard.putBoolean("N-X", notSwerveController.x().getAsBoolean());
+        SmartDashboard.putBoolean("N-Y", notSwerveController.y().getAsBoolean());
     }
 }
