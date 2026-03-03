@@ -133,6 +133,8 @@ public class RobotContainer {
         + intake.getPivotPosition(),
         false)
         );
+
+        addGamepadsTelemetry();
     }
 
     public Command getAutonomousCommand() {
