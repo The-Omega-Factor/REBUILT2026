@@ -19,13 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Another Position"
+            "waitTime": 10.0
           }
         }
       ]

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.2911979166728687,
-        "y": 7.473831845239976
+        "x": 2.6940113636363634,
+        "y": 7.364102272727273
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.291197916672869,
-        "y": 7.473831845239976
+        "x": 3.6940113636363634,
+        "y": 7.364102272727273
       },
       "isLocked": false,
-      "linkedName": "B1-01-ShootPosition"
+      "linkedName": "Test Link"
     },
     {
       "anchor": {
-        "x": 2.1623214285714285,
-        "y": 5.340059523809524
+        "x": 1.0964545454545453,
+        "y": 7.364102272727273
       },
       "prevControl": {
-        "x": 1.1623214285714285,
-        "y": 5.340059523809524
+        "x": 0.09645454545454535,
+        "y": 7.364102272727273
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Simple Auto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -70.0
+    "rotation": 72.29957221133286
   },
   "useDefaultConstraints": true
 }

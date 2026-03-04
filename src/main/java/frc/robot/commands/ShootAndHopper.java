@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -44,14 +45,29 @@ public class ShootAndHopper extends Command {
 
     @Override
     public boolean isFinished() {
+        SmartDashboard.putBoolean("Will end: ", willEnd);
+
         if (!willEnd) {
+            System.out.println("the command won't end");
             return false;
         }
 
         double shooterTolerance = Constants.Shooter.shooterErrorTolerance;
         double hopperTolerance = Constants.Shooter.hopperErrorTolerance;
+        double shooterError = Math.abs(shooterSubsystem.getShooterVelocity() - shooterSpeed.getAsDouble() * 40);
+        double hopperError = Math.abs(shooterSubsystem.getHopperVelocity() - hopperSpeed.getAsDouble() * 40);
 
-        return Math.abs(shooterSubsystem.getShooterVelocity() - shooterSpeed.getAsDouble()) < shooterTolerance &&
-            Math.abs(shooterSubsystem.getHopperVelocity() - hopperSpeed.getAsDouble()) < hopperTolerance;
+        SmartDashboard.putBoolean("First boolean", Math.abs(shooterSubsystem.getShooterVelocity() - shooterSpeed.getAsDouble()) < shooterTolerance);
+        SmartDashboard.putBoolean("Second boolean", Math.abs(shooterSubsystem.getHopperVelocity() - hopperSpeed.getAsDouble()) < hopperTolerance);
+
+        SmartDashboard.putNumber("Shooter Error", shooterError);
+        SmartDashboard.putNumber("Hopper Error", hopperError);
+
+        SmartDashboard.putNumber("Shooter.getVelocity()", shooterSubsystem.getShooterVelocity());
+        SmartDashboard.putNumber("Hopper Veocity", shooterSubsystem.getHopperVelocity());
+        SmartDashboard.putNumber("Target Shooter", shooterSpeed.getAsDouble());
+        SmartDashboard.putNumber("Target Hopper", hopperSpeed.getAsDouble());
+
+        return shooterError < shooterTolerance && hopperError < hopperTolerance;
     }
 }

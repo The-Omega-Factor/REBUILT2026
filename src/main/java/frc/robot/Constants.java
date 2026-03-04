@@ -24,12 +24,12 @@ public class Constants {
         public static final double shootersStatorAmpsLimit = 100;
         public static final double shootersCurrentLimit = 45;
         public static final double shooterSpeedMultiplier = 1;
-        public static final double shooterErrorTolerance = 1e-2;
+        public static final double shooterErrorTolerance = 2;
         
         public static final double hopperGearRatio = 20/35;
         public static final double hopperStatorAmpsLimit = 67;
         public static final double hopperCurrentLimit = 45;
-        public static final double hopperErrorTolerance = 1e-2;
+        public static final double hopperErrorTolerance = 2;
 
         public static class ShooterPIDS {
             public static final double kV = 0.5;

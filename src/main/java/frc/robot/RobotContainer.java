@@ -62,7 +62,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
-        NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 0.85 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
+        NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.5 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         autoChooser.addOption("Super simple auto", new ShootAndHopper(shooter, () -> {return 0.85 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
