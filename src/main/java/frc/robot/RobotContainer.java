@@ -62,11 +62,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
-        NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.5 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
+        NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.2 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
+        NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 0.85 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        autoChooser.addOption("Super simple auto", new ShootAndHopper(shooter, () -> {return 0.85 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
-        SmartDashboard.putData(autoChooser);
+        SmartDashboard.putData(autoChooser); 
 
         configureBindings();
     }
@@ -79,7 +79,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), deadband) * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), deadband) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(joystick.getRightX() * MaxAngularRate * 0.9) // Drive counterclockwise with negative X (left)
             )
         );
 

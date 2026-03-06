@@ -48,7 +48,6 @@ public class ShootAndHopper extends Command {
         SmartDashboard.putBoolean("Will end: ", willEnd);
 
         if (!willEnd) {
-            System.out.println("the command won't end");
             return false;
         }
 
