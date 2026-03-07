@@ -21,14 +21,14 @@ public class Constants {
         public static final int hopperID = 5;
 
         public static final double shootersGearRatio = 25/20;
-        public static final double shootersStatorAmpsLimit = 100;
-        public static final double shootersCurrentLimit = 45;
+        public static final double shootersStatorAmpsLimit = 40;
+        public static final double shootersCurrentLimit = 40;
         public static final double shooterSpeedMultiplier = 1;
         public static final double shooterErrorTolerance = 2;
         
         public static final double hopperGearRatio = 20/35;
-        public static final double hopperStatorAmpsLimit = 67;
-        public static final double hopperCurrentLimit = 45;
+        public static final double hopperStatorAmpsLimit = 40;
+        public static final double hopperCurrentLimit = 40;
         public static final double hopperErrorTolerance = 2;
 
         public static class ShooterPIDS {
@@ -53,8 +53,8 @@ public class Constants {
     public static class Intake {
         public static final int spinID = 27;
         public static final double spinGearRatio = 20/20;
-        public static final double spinStatorAmpsLimit = 50;
-        public static final double spinCurrentLimit = 45;
+        public static final double spinStatorAmpsLimit =40;
+        public static final double spinCurrentLimit = 40;
         public static final double spinSpeedMultiplier = 67;
         public static final double spinErrorTolerance = 1e-2;
 
