@@ -150,7 +150,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* ============================= */
 
     public Pose2d getPose() {
-        return getState().Pose;
+        Pose2d currentPose = getState().Pose;
+        double reflected = -currentPose.getRotation().getRadians();
+
+        return new Pose2d(
+            currentPose.getX(),
+            currentPose.getY(),
+            new Rotation2d(reflected)
+        );
     }
 
     public void resetPose(Pose2d newPose) {
