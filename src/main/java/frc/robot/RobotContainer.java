@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,6 +54,7 @@ public class RobotContainer {
 
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
+    private Pose2d currentRobotPose;
 
     public RobotContainer() {
         NamedCommands.registerCommand("B100Intake", new ParallelCommandGroup(
@@ -135,6 +137,8 @@ public class RobotContainer {
         + intake.getPivotPosition(),
         false)
         );
+
+        currentRobotPose = drivetrain.getPose();
 
         addGamepadsTelemetry();
     }

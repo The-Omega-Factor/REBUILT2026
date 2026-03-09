@@ -13,7 +13,8 @@ package frc.robot;
 import com.ctre.phoenix6.CANBus;
 
 public class Constants {
-    public static CANBus canbus = new CANBus("SwerveBase");
+    public final static CANBus canbus = new CANBus("SwerveBase");
+    public final static String limelightName = "Limelight2026";
 
     public static class Shooter {
         public static final int shooterLID = 0;
