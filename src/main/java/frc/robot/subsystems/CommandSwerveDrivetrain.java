@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -152,17 +153,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /* Basic Accessors               */
     /* ============================= */
 
-    public Pose2d getPose() {
+    public void updateVisionPose() {
         if (Limelight.getTV(limelightName)) {
-            return Limelight.getBotPose2d(Constants.limelightName);
-        } else {
-            Pose2d currentPose = getState().Pose;
-            return new Pose2d(
-            currentPose.getX(),
-            currentPose.getY(),
-            new Rotation2d(currentPose.getRotation().getRadians())
-            );
-        }
+            Pose2d visionPose = Limelight.getBotPose2d(limelightName);
+
+            double timeStamp = Timer.getFPGATimestamp() 
+                - (Limelight.getLatency_Pipeline(limelightName)
+                + Limelight.getLatency_Capture(limelightName))/1000;
+
+            this.addVisionMeasurement(visionPose, timeStamp);
+        } 
+    }
+
+    public Pose2d getPose() {
+        return getState().Pose;
     }
 
     public void resetPose(Pose2d newPose) {
@@ -199,6 +203,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void periodic() {
+        updateVisionPose();
+
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(

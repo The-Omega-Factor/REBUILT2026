@@ -70,6 +70,8 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData(autoChooser); 
 
+        currentRobotPose = drivetrain.getPose();
+
         configureBindings();
     }
 
