@@ -54,7 +54,7 @@ public class Constants {
     public static class Intake {
         public static final int spinID = 27;
         public static final double spinGearRatio = 20/20;
-        public static final double spinStatorAmpsLimit =40;
+        public static final double spinStatorAmpsLimit = 40;
         public static final double spinCurrentLimit = 40;
         public static final double spinSpeedMultiplier = 67;
         public static final double spinErrorTolerance = 1e-2;
@@ -66,7 +66,8 @@ public class Constants {
             public static final double kI = 0.0; 
         }
 
-        public static final int pivotID = 24;
+        public static final int pivotRID = 24;
+        public static final int pivotLID = 1000;
         public static final double pivotGearRatio = 20/20;
         public static final double pivotStatorAmpsLimit = 50;
         public static final double pivotCurrentLimit = 45;

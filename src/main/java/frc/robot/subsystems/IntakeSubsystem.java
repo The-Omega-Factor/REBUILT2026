@@ -2,10 +2,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,9 +18,11 @@ import frc.robot.Constants.Intake;
 public class IntakeSubsystem extends SubsystemBase {
     private final TalonFXConfiguration spinConfig;
     private final TalonFXConfiguration pivotConfig;
+    private final TalonFXConfiguration pivotLConfig;
 
     private final TalonFX spin;
     private final TalonFX pivot;
+    private final TalonFX pivotL;
 
     private final VelocityVoltage spinRequest;
     private final PositionVoltage pivotRequest;
@@ -27,9 +31,11 @@ public class IntakeSubsystem extends SubsystemBase {
         //Insantiating values
         spinConfig = new TalonFXConfiguration();
         pivotConfig = new TalonFXConfiguration();
+        pivotLConfig = new TalonFXConfiguration();
 
         spin = new TalonFX(Intake.spinID, Constants.canbus);
-        pivot = new TalonFX(Intake.pivotID, Constants.canbus);
+        pivot = new TalonFX(Intake.pivotRID, Constants.canbus);
+        pivotL = new TalonFX(Intake.pivotLID, Constants.canbus);
 
         spinRequest = new VelocityVoltage(0).withSlot(0);
         pivotRequest = new PositionVoltage(getPivotPosition()).withSlot(0);
@@ -71,6 +77,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
         pivot.getConfigurator().apply(pivotConfig);
         pivot.setNeutralMode(NeutralModeValue.Brake);
+
+        pivotLConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.pivotStatorAmpsLimit;
+        pivotLConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.pivotCurrentLimit;
+        pivotLConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        pivotLConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        pivotLConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Intake.pivotUpperLimit;
+        pivotLConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Intake.pivotLowerLimit;
+        //pivotLConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        //pivotLConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+
+        pivotL.getConfigurator().apply(pivotLConfig);
+        pivotL.setNeutralMode(NeutralModeValue.Brake);
+        pivotL.setControl(new Follower(pivot.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
     public void setIntakeSpinSpeed(double speed) {
