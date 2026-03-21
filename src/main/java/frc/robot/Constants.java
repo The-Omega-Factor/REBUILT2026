@@ -67,7 +67,7 @@ public class Constants {
         }
 
         public static final int pivotRID = 24;
-        public static final int pivotLID = 1000;
+        public static final int pivotLID = 30;
         public static final double pivotGearRatio = 20/20;
         public static final double pivotStatorAmpsLimit = 50;
         public static final double pivotCurrentLimit = 45;
