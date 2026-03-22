@@ -126,9 +126,9 @@ public class Constants {
     public static final class Field {
         //(meters)
 
-        public static final double y = 4;
-        public static final double redX = 0;
-        public static final double blueX = 0;
+        public static final double y = 4.025;
+        public static final double redX = 11.91;
+        public static final double blueX = 4.625;
 
         public static final double goalShortWidth = 10;
   }

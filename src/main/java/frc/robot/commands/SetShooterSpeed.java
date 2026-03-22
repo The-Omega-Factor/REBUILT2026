@@ -1,0 +1,64 @@
+package frc.robot.commands;
+
+import java.util.function.DoubleSupplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.Field;
+import frc.robot.subsystems.ShooterSubsystem;
+import static frc.robot.utils.Alliance.getAlliance;
+import static frc.robot.utils.ShooterSpeedCalculators.*;
+
+public class SetShooterSpeed extends Command {
+    private final ShooterSubsystem shooter;
+    private final Pose2d currentPose;
+    private final ShooterMode mode;
+    private final DoubleSupplier speed;
+    private final double targetX;
+    private final double targetY = Constants.Field.y;
+    private final double theta = Constants.Shooter.shooterLaunchAngle;
+
+    public SetShooterSpeed(ShooterSubsystem shooter, Pose2d currentPose, ShooterMode mode) {
+        this.shooter = shooter;
+        this.currentPose = currentPose;
+        this.mode = mode;
+        this.speed = null;
+        this.targetX = getAlliance() == DriverStation.Alliance.Red ? 
+                        Field.redX : Field.blueX;
+    }
+
+    public SetShooterSpeed(ShooterSubsystem shooter, Pose2d currentPose, ShooterMode mode, DoubleSupplier speed) {
+        this.shooter = shooter;
+        this.currentPose = currentPose;
+        this.mode = mode;
+        this.speed = speed;
+        this.targetX = getAlliance() == DriverStation.Alliance.Red ? 
+                        Field.redX : Field.blueX;
+    }
+
+    @Override
+    public void initialize() {
+        System.out.println("Initializing only SHOOTER");
+    }
+
+    @Override
+    public void execute() {
+        switch (mode) {
+            case LENGTH -> shooter.setShooterVelocity(length(currentPose, targetX, targetY, speed.getAsDouble()));
+            case NODRAG -> shooter.setShooterVelocity(noDrag(currentPose, targetX, targetY, theta, 3));
+            default -> System.out.println("No valid mode selected");
+        }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        shooter.setShooterVelocity(0);
+    }
+}

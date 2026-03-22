@@ -9,6 +9,11 @@ public class ShooterSpeedCalculators {
     private static final double h = Constants.Shooter.heightDisplacement;
     private static final double delta = Constants.Field.goalShortWidth/2;
 
+    public enum ShooterMode {
+        LENGTH,
+        NODRAG
+    }
+
     public static double length(Pose2d current, double targetX, double targetY,  double multiplier) {
         return getLength(current, targetX, targetY) * multiplier;
     }
