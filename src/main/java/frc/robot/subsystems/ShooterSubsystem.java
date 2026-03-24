@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.ShooterPIDS;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -38,6 +39,8 @@ public class ShooterSubsystem extends SubsystemBase {
         hopperRequest = new VelocityVoltage(0).withSlot(0);
 
         shooterLConfig.Slot0.kP = Constants.Shooter.ShooterPIDS.kP;
+        shooterLConfig.Slot0.kV = ShooterPIDS.kV;
+        shooterLConfig.Slot0.kS = ShooterPIDS.kS;
         shooterLConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         shooterLConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.shootersGearRatio;
 
