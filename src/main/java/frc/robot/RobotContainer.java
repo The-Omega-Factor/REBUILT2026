@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
+
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
 import frc.robot.generated.TunerConstants;
@@ -127,18 +128,13 @@ public class RobotContainer {
 
         //intake
         
-        intake.setDefaultCommand(new SetIntakeState(intake, 
-        () -> {
-            double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband);
-            double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband);
+  intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
+    double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
+    double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband); 
+    return (right - left) * Constants.Intake.spinSpeedMultiplier; }, () -> 
+    MathUtil.applyDeadband(notSwerveController.getRightX(), deadband)
+     * Constants.Intake.pivotSpeedMultiplier + intake.getPivotPosition(), false) );
 
-            return (right - left) * Constants.Intake.spinSpeedMultiplier;
-        },
-        () -> 
-        MathUtil.applyDeadband(notSwerveController.getRightX(), deadband) * Constants.Intake.pivotSpeedMultiplier 
-        + intake.getPivotPosition(),
-        false)
-        );
 
         currentRobotPose = drivetrain.getPose();
 

@@ -67,12 +67,14 @@ public class Constants {
         }
 
         public static final int pivotRID = 24;
-        public static final int pivotLID = 1000;
+        public static final int pivotLID = 30;
         public static final double pivotGearRatio = 20/20;
         public static final double pivotStatorAmpsLimit = 50;
         public static final double pivotCurrentLimit = 45;
         public static final double pivotSpeedMultiplier = 2;
         public static final double pivotErrorTolerance = 1e-2;
+
+
 
         /*
         WARNING: USE "System.out.println(intakeSubsystem.getPivotPosition());" to in

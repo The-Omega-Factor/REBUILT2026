@@ -1,4 +1,4 @@
-//Limelight v1.14 (REQUIRES LLOS 2026.0 OR LATER)
+//LimelightHelpers v1.14 (REQUIRES LLOS 2026.0 OR LATER)
 
 package frc.robot;
 
@@ -7,6 +7,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.TimestampedDoubleArray;
+import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,6 +17,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -28,10 +32,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import edu.wpi.first.net.PortForwarder;
 
 /**
- * Limelight provides static methods and classes for interfacing with Limelight vision cameras in FRC.
+ * LimelightHelpers provides static methods and classes for interfacing with Limelight vision cameras in FRC.
  * This library supports all Limelight features including AprilTag tracking, Neural Networks, and standard color/retroreflective tracking.
  */
-public class Limelight {
+public class LimelightHelpers {
 
     private static final Map<String, DoubleArrayEntry> doubleArrayEntries = new ConcurrentHashMap<>();
 
@@ -905,7 +909,7 @@ public class Limelight {
     }
 
     private static PoseEstimate getBotPoseEstimate(String limelightName, String entryName, boolean isMegaTag2) {
-        DoubleArrayEntry poseEntry = Limelight.getLimelightDoubleArrayEntry(limelightName, entryName);
+        DoubleArrayEntry poseEntry = LimelightHelpers.getLimelightDoubleArrayEntry(limelightName, entryName);
         
         TimestampedDoubleArray tsValue = poseEntry.getAtomic();
         double[] poseArray = tsValue.value;
@@ -958,7 +962,7 @@ public class Limelight {
      * @return Array of RawFiducial objects containing detection details
      */
     public static RawFiducial[] getRawFiducials(String limelightName) {
-        var entry = Limelight.getLimelightNTTableEntry(limelightName, "rawfiducials");
+        var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawfiducials");
         var rawFiducialArray = entry.getDoubleArray(new double[0]);
         int valsPerEntry = 7;
         if (rawFiducialArray.length % valsPerEntry != 0) {
@@ -991,7 +995,7 @@ public class Limelight {
      * @return Array of RawDetection objects containing detection details
      */
     public static RawDetection[] getRawDetections(String limelightName) {
-        var entry = Limelight.getLimelightNTTableEntry(limelightName, "rawdetections");
+        var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawdetections");
         var rawDetectionArray = entry.getDoubleArray(new double[0]);
         int valsPerEntry = 12;
         if (rawDetectionArray.length % valsPerEntry != 0) {
@@ -1030,7 +1034,7 @@ public class Limelight {
      * @return Array of RawTarget objects containing up to 3 contours
      */
     public static RawTarget[] getRawTargets(String limelightName) {
-        var entry = Limelight.getLimelightNTTableEntry(limelightName, "rawtargets");
+        var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawtargets");
         var rawTargetArray = entry.getDoubleArray(new double[0]);
         int valsPerEntry = 3;
         if (rawTargetArray.length % valsPerEntry != 0) {
@@ -1889,7 +1893,7 @@ public class Limelight {
     public static LimelightResults getLatestResults(String limelightName) {
 
         long start = System.nanoTime();
-        Limelight.LimelightResults results = new Limelight.LimelightResults();
+        LimelightHelpers.LimelightResults results = new LimelightHelpers.LimelightResults();
         if (mapper == null) {
             mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         }

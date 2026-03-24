@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -28,7 +27,6 @@ public class IntakeSubsystem extends SubsystemBase {
     private final PositionVoltage pivotRequest;
 
     public IntakeSubsystem() {
-        //Insantiating values
         spinConfig = new TalonFXConfiguration();
         pivotConfig = new TalonFXConfiguration();
         pivotLConfig = new TalonFXConfiguration();
@@ -38,9 +36,9 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotL = new TalonFX(Intake.pivotLID, Constants.canbus);
 
         spinRequest = new VelocityVoltage(0).withSlot(0);
-        pivotRequest = new PositionVoltage(getPivotPosition()).withSlot(0);
+        pivotRequest = new PositionVoltage(0).withSlot(0);
 
-        //Intake Spin configurations
+        // Intake spin config
         spinConfig.Slot0.kP = Constants.Intake.SpinPIDs.kP;
         spinConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         spinConfig.Feedback.SensorToMechanismRatio = Constants.Intake.spinGearRatio;
@@ -53,15 +51,11 @@ public class IntakeSubsystem extends SubsystemBase {
         spin.getConfigurator().apply(spinConfig);
         spin.setNeutralMode(NeutralModeValue.Coast);
 
-        //Intake Pivot configurations
+        // Pivot master config
         pivotConfig.Slot0.kP = Constants.Intake.pivotPIDs.kP;
+        pivotConfig.Slot0.kD = Constants.Intake.pivotPIDs.kD;
+        pivotConfig.Slot0.kG = Constants.Intake.pivotPIDs.kG;
 
-        MotionMagicConfigs pivotMM = new MotionMagicConfigs();
-        pivotMM.MotionMagicCruiseVelocity = 0;
-        pivotMM.MotionMagicAcceleration = 0;
-        pivotMM.MotionMagicJerk = 0;
-
-        //pivotConfig.MotionMagic = pivotMM;
         pivotConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         pivotConfig.Feedback.SensorToMechanismRatio = Constants.Intake.pivotGearRatio;
 
@@ -72,12 +66,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
         pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Intake.pivotUpperLimit;
         pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Intake.pivotLowerLimit;
-        //pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        //pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        // pivotConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        // pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
 
         pivot.getConfigurator().apply(pivotConfig);
         pivot.setNeutralMode(NeutralModeValue.Brake);
 
+        // Pivot follower config
         pivotLConfig.CurrentLimits.StatorCurrentLimit = Constants.Intake.pivotStatorAmpsLimit;
         pivotLConfig.CurrentLimits.SupplyCurrentLimit = Constants.Intake.pivotCurrentLimit;
         pivotLConfig.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -85,11 +80,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
         pivotLConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Intake.pivotUpperLimit;
         pivotLConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Intake.pivotLowerLimit;
-        //pivotLConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        //pivotLConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        // pivotLConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        // pivotLConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
 
         pivotL.getConfigurator().apply(pivotLConfig);
         pivotL.setNeutralMode(NeutralModeValue.Brake);
+
+        // Second pivot motor follows the first
         pivotL.setControl(new Follower(pivot.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
@@ -111,7 +108,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Pivot Position: ", getPivotPosition());
+        SmartDashboard.putNumber("Pivot Position", getPivotPosition());
         SmartDashboard.putNumber("Spin Speed", getSpinSpeed());
     }
 }
