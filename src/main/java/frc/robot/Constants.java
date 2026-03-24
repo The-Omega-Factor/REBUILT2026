@@ -13,8 +13,9 @@ package frc.robot;
 import com.ctre.phoenix6.CANBus;
 
 public class Constants {
-    public final static CANBus canbus = new CANBus("SwerveBase");
-    public final static String limelightName = "Limelight2026";
+    public static final CANBus canbus = new CANBus("SwerveBase");
+    public static final String limelightName = "Limelight2026";
+    public static final double gravity = 9.81;
 
     public static class Shooter {
         public static final int shooterLID = 0;
@@ -26,6 +27,7 @@ public class Constants {
         public static final double shootersCurrentLimit = 40;
         public static final double shooterSpeedMultiplier = 1;
         public static final double shooterErrorTolerance = 2;
+        public static final double shooterLaunchAngle = 75;
         
         public static final double hopperGearRatio = 20/35;
         public static final double hopperStatorAmpsLimit = 40;
@@ -49,6 +51,7 @@ public class Constants {
         }
 
         public static final double distanceBasedMultiplier = 1;
+        public static final double heightDisplacement = 5;
     }
 
     public static class Intake {
@@ -125,8 +128,10 @@ public class Constants {
     public static final class Field {
         //(meters)
 
-        public static final double y = 4;
-        public static final double redX = 0;
-        public static final double blueX = 0;
+        public static final double y = 4.025;
+        public static final double redX = 11.91;
+        public static final double blueX = 4.625;
+
+        public static final double goalShortWidth = 10;
   }
 }

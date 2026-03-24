@@ -8,7 +8,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,11 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final VelocityVoltage shooterRequest;
     private final VelocityVoltage hopperRequest;
 
-    private String shooterMode;
-
     public ShooterSubsystem() {
-        shooterMode = "power";
-
         shooterLConfig = new TalonFXConfiguration();
         shooterRConfig = new TalonFXConfiguration();
         hopperConfig = new TalonFXConfiguration();
@@ -89,22 +84,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setHopperVelocity(double speed) {
         speed *= (3000/60);
         hopper.setControl(hopperRequest.withVelocity(speed));
-    }
-
-    public double distanceBasedShooterSpeed(Pose2d robotPose, double targetX, double targetY) {
-        double robotX = robotPose.getX();
-        double robotY = robotPose.getY();
-        
-        return Math.sqrt(Math.pow(robotX - targetX, 2) + Math.pow(robotY - targetY, 2)) 
-        * Constants.Shooter.distanceBasedMultiplier;
-    }
-
-    public void setShooterMode(String newMode) {
-        this.shooterMode = newMode;
-    }
-
-    public String getShooterMode() {
-        return shooterMode;
     }
 
     public double getHopperVelocity() {
