@@ -16,6 +16,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -26,12 +27,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
-import frc.robot.Limelight;
+import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
@@ -72,10 +72,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private final String limelightName = Constants.limelightName;
 
-    /* ============================= */
-    /* Constructor                   */
-    /* ============================= */
-
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
@@ -88,10 +84,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         configureAutoBuilder();
     }
-
-    /* ============================= */
-    /* AutoBuilder Configuration     */
-    /* ============================= */
 
     private void configureAutoBuilder() {
         try {
@@ -126,43 +118,61 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
-    /* ============================= */
-    /* Zero Functions (IMPORTANT)    */
-    /* ============================= */
-
-    /** 
-     * Fully resets gyro AND pose to (0,0,0).
-     * DO NOT use during auto.
-     */
     public void zeroAll() {
         resetPose(new Pose2d());
         System.out.println("Gyro + Pose reset to 0,0,0");
     }
 
-    /**
-     * Safer mid-match reset.
-     * Keeps X/Y but zeros heading.
-     */
     public void zeroHeadingOnly() {
         Pose2d current = getPose();
         resetPose(new Pose2d(current.getTranslation(), new Rotation2d()));
         System.out.println("Heading reset, translation preserved");
     }
 
-    /* ============================= */
-    /* Basic Accessors               */
-    /* ============================= */
-
     public void updateVisionPose() {
-        if (Limelight.getTV(limelightName)) {
-            Pose2d visionPose = Limelight.getBotPose2d(limelightName);
+        if (!LimelightHelpers.getTV(limelightName)) {
+            return;
+        }
 
-            double timeStamp = Timer.getFPGATimestamp() 
-                - (Limelight.getLatency_Pipeline(limelightName)
-                + Limelight.getLatency_Capture(limelightName))/1000;
+        LimelightHelpers.SetRobotOrientation(
+            limelightName,
+            getPose().getRotation().getDegrees(),
+            0,
+            0,
+            0,
+            0,
+            0
+        );
 
-            this.addVisionMeasurement(visionPose, timeStamp);
-        } 
+        LimelightHelpers.PoseEstimate estimate =
+            LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+
+        if (estimate == null || estimate.tagCount == 0) {
+            return;
+        }
+
+        if (Math.abs(getRobotRelativeSpeeds().omegaRadiansPerSecond) > 2.0) {
+            return;
+        }
+
+        if (estimate.tagCount >= 2) {
+            addVisionMeasurement(
+                estimate.pose,
+                estimate.timestampSeconds,
+                VecBuilder.fill(0.5, 0.5, 9999999.0)
+            );
+        } else {
+            addVisionMeasurement(
+                estimate.pose,
+                estimate.timestampSeconds,
+                VecBuilder.fill(1.2, 1.2, 9999999.0)
+            );
+        }
+
+        SmartDashboard.putNumber("LL Tag Count", estimate.tagCount);
+        SmartDashboard.putNumber("LL Pose X", estimate.pose.getX());
+        SmartDashboard.putNumber("LL Pose Y", estimate.pose.getY());
+        SmartDashboard.putNumber("LL Pose Theta", estimate.pose.getRotation().getDegrees());
     }
 
     public Pose2d getPose() {
@@ -185,10 +195,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return run(() -> setControl(request.get()));
     }
 
-    /* ============================= */
-    /* SysId                         */
-    /* ============================= */
-
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.quasistatic(direction);
     }
@@ -196,10 +202,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
     }
-
-    /* ============================= */
-    /* Periodic                      */
-    /* ============================= */
 
     @Override
     public void periodic() {
@@ -216,14 +218,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
-        SmartDashboard.putNumber("X: ", this.getPose().getX());
-        SmartDashboard.putNumber("Y", this.getPose().getY());
-        SmartDashboard.putNumber("Theta", this.getPose().getRotation().getDegrees());
+        SmartDashboard.putNumber("X", getPose().getX());
+        SmartDashboard.putNumber("Y", getPose().getY());
+        SmartDashboard.putNumber("Theta", getPose().getRotation().getDegrees());
     }
-
-    /* ============================= */
-    /* Simulation                    */
-    /* ============================= */
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
@@ -238,10 +236,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
-
-    /* ============================= */
-    /* Vision                        */
-    /* ============================= */
 
     @Override
     public void addVisionMeasurement(Pose2d pose, double timestampSeconds) {
