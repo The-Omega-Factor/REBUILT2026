@@ -12,7 +12,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,13 +22,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
-
+import frc.robot.commands.AlignToPose;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
+import frc.robot.commands.SetShooterSpeed;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.ShooterSpeedCalculators.ShooterMode;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -53,7 +54,6 @@ public class RobotContainer {
 
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
-    private Pose2d currentRobotPose;
 
     public RobotContainer() {
         NamedCommands.registerCommand("B100Intake", new ParallelCommandGroup(
@@ -68,8 +68,6 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData(autoChooser); 
-
-        currentRobotPose = drivetrain.getPose();
 
         configureBindings();
     }
@@ -100,6 +98,7 @@ public class RobotContainer {
         // joystick.x().onTrue(Commands.runOnce(drivetrain::setRotationZero, drivetrain));
         joystick.x().onTrue(new SetOperatorForward(drivetrain));
         joystick.y().onTrue(Commands.runOnce(drivetrain::zeroAll));
+        joystick.leftBumper().onTrue(new AlignToPose(drivetrain));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -124,17 +123,17 @@ public class RobotContainer {
         false)
         );
 
+        notSwerveController.leftBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
+        notSwerveController.rightBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
+
         //intake
         
-  intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
-    double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
-    double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband); 
-    return (right - left) * Constants.Intake.spinSpeedMultiplier; }, () -> 
-    MathUtil.applyDeadband(notSwerveController.getRightX(), deadband)
-     * Constants.Intake.pivotSpeedMultiplier + intake.getPivotPosition(), false) );
-
-
-        currentRobotPose = drivetrain.getPose();
+        intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
+            double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
+            double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband); 
+            return (right - left) * Constants.Intake.spinSpeedMultiplier; }, () -> 
+            MathUtil.applyDeadband(notSwerveController.getRightX(), deadband)
+            * Constants.Intake.pivotSpeedMultiplier + intake.getPivotPosition(), false));
 
         addGamepadsTelemetry();
     }
