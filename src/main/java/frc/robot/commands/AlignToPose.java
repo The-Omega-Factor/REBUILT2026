@@ -1,13 +1,16 @@
-    package frc.robot.commands;
+package frc.robot.commands;
 
-    import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 
-    import edu.wpi.first.math.MathUtil;
-    import edu.wpi.first.math.controller.PIDController;
-    import edu.wpi.first.math.geometry.Pose2d;
-    import edu.wpi.first.wpilibj2.command.Command;
-    import frc.robot.Constants;
-    import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.Field;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import static frc.robot.utils.Alliance.getAlliance;
 
     public class AlignToPose extends Command {
         private final CommandSwerveDrivetrain drivetrain;
@@ -27,10 +30,11 @@
         private double currentY;
         private double currentHeading;
 
-        public AlignToPose(CommandSwerveDrivetrain drivetrain, double targetX, double targetY) {
+        public AlignToPose(CommandSwerveDrivetrain drivetrain) {
             this.drivetrain = drivetrain;
-            this.targetX = targetX;
-            this.targetY = targetY;
+
+            this.targetX = getAlliance() == DriverStation.Alliance.Red ? Field.redX : Field.blueX;
+            this.targetY = Field.y;
 
             addRequirements(drivetrain);
         }
