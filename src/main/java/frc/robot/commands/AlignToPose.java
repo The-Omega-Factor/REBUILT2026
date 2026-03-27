@@ -12,42 +12,42 @@ import frc.robot.Constants.Field;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import static frc.robot.utils.Alliance.getAlliance;
 
-    public class AlignToPose extends Command {
-        private final CommandSwerveDrivetrain drivetrain;
-        private final double targetX;
-        private final double targetY;
+public class AlignToPose extends Command {
+    private final CommandSwerveDrivetrain drivetrain;
+    private final double targetX;
+    private final double targetY;
 
-        private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
-        private final PIDController thetaController = new PIDController(
-            Constants.Swerve.AutoBuilderPIDs.Rotational.kP, 
-            Constants.Swerve.AutoBuilderPIDs.Rotational.kI, 
-            Constants.Swerve.AutoBuilderPIDs.Rotational.kD
-            );
-        private double targetHeading;
+    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
+    private final PIDController thetaController = new PIDController(
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kP, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kI, 
+        Constants.Swerve.AutoBuilderPIDs.Rotational.kD
+        );
+    private double targetHeading;
 
-        private Pose2d currentPose;
-        private double currentX;
-        private double currentY;
-        private double currentHeading;
+    private Pose2d currentPose;
+    private double currentX;
+    private double currentY;
+    private double currentHeading;
 
-        public AlignToPose(CommandSwerveDrivetrain drivetrain) {
-            this.drivetrain = drivetrain;
+    public AlignToPose(CommandSwerveDrivetrain drivetrain) {
+        this.drivetrain = drivetrain;
 
-            this.targetX = getAlliance() == DriverStation.Alliance.Red ? Field.redX : Field.blueX;
-            this.targetY = Field.y;
+        this.targetX = getAlliance() == DriverStation.Alliance.Red ? Field.redX : Field.blueX;
+        this.targetY = Field.y;
 
-            addRequirements(drivetrain);
-        }
+        addRequirements(drivetrain);
+    }
 
-        @Override
-        public void initialize() {
-            thetaController.reset();
-            thetaController.setTolerance(Math.toRadians(Constants.Swerve.angularTolerance));
-            thetaController.enableContinuousInput(-Math.PI, Math.PI);
-            //thetaController.setIntegratorRange(-Constants.Swerve.minOmega, Constants.Swerve.maxOmega);
-        }
+    @Override
+    public void initialize() {
+        thetaController.reset();
+        thetaController.setTolerance(Math.toRadians(Constants.Swerve.angularTolerance));
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        //thetaController.setIntegratorRange(-Constants.Swerve.minOmega, Constants.Swerve.maxOmega);
+    }
 
-        @Override
+    @Override
     public void execute() {
         currentPose = drivetrain.getPose();
 
@@ -75,13 +75,14 @@ import static frc.robot.utils.Alliance.getAlliance;
             driveRequest.withRotationalRate(pidOutput)
         );
     }
-        @Override
-        public boolean isFinished() {
-            return thetaController.atSetpoint();
-        }
 
-        @Override
-        public void end(boolean interrupted) {
-            drivetrain.setControl(driveRequest.withRotationalRate(0));
-        }
+    @Override
+    public boolean isFinished() {
+        return thetaController.atSetpoint();
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.setControl(driveRequest.withRotationalRate(0));
+    }   
+}

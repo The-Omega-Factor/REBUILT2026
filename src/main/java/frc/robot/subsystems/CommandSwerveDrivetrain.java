@@ -130,7 +130,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public void updateVisionPose() {
-        if (!Limelight.getTV(limelightName)) {
+        if (!Limelight.getTV(limelightName) || Limelight.getTA(limelightName) < 0.05) {
             return;
         }
 
