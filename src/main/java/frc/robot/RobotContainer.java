@@ -1,6 +1,4 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
 
@@ -33,14 +31,15 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utils.ShooterSpeedCalculators.ShooterMode;
 
 public class RobotContainer {
-    private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
     private final double deadband = Constants.Controllers.deadband;
 
-    /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+            .withDeadband(MaxSpeed * 0.1)
+            .withRotationalDeadband(MaxAngularRate * 0.1)
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -67,25 +66,20 @@ public class RobotContainer {
         NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.15  * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData(autoChooser); 
+        SmartDashboard.putData("Auto Chooser", autoChooser); // ✅ FIXED
 
         configureBindings();
     }
 
     private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), deadband) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), deadband) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(joystick.getRightX() * MaxAngularRate * 0.9) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(MathUtil.applyDeadband(-joystick.getLeftY(), deadband) * MaxSpeed)
+                    .withVelocityY(MathUtil.applyDeadband(-joystick.getLeftX(), deadband) * MaxSpeed)
+                    .withRotationalRate(joystick.getRightX() * MaxAngularRate * 0.9)
             )
         );
 
-        // Idle while the robot is disabled. This ensures the configured
-        // neutral mode is applied to the drive motors while disabled.
         final var idle = new SwerveRequest.Idle();
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
@@ -95,13 +89,10 @@ public class RobotContainer {
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
-        // joystick.x().onTrue(Commands.runOnce(drivetrain::setRotationZero, drivetrain));
         joystick.x().onTrue(new SetOperatorForward(drivetrain));
         joystick.y().onTrue(Commands.runOnce(drivetrain::zeroAll));
         joystick.leftBumper().onTrue(new AlignToPose(drivetrain));
 
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
         joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
@@ -109,14 +100,12 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        //shooter
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> {
             if (notSwerveController.x().getAsBoolean()) return 1.36 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.a().getAsBoolean()) return 1 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.b().getAsBoolean()) return -1 * Constants.Shooter.shooterSpeedMultiplier;
-
             return 0.0;
         }, 
         () -> MathUtil.applyDeadband(notSwerveController.getLeftY(), deadband),
@@ -126,8 +115,6 @@ public class RobotContainer {
         notSwerveController.leftBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
         notSwerveController.rightBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
 
-        //intake
-        
         intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
             double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
             double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband); 
@@ -146,7 +133,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("S-LeftY", joystick.getLeftY());
         SmartDashboard.putNumber("S-LeftX", joystick.getLeftX());
         SmartDashboard.putNumber("S-RightX", joystick.getRightX());
-        
+
         SmartDashboard.putBoolean("S-A", joystick.a().getAsBoolean());
         SmartDashboard.putBoolean("S-B", joystick.b().getAsBoolean());
         SmartDashboard.putBoolean("S-X", joystick.x().getAsBoolean());
@@ -155,7 +142,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("N-LeftY", notSwerveController.getLeftY());
         SmartDashboard.putNumber("N-RightX", notSwerveController.getRightX());
         SmartDashboard.putNumber("N-LeftTrigger", notSwerveController.getLeftTriggerAxis());
-        SmartDashboard.putNumber("N-LeftTrigger", notSwerveController.getRightTriggerAxis());
+        SmartDashboard.putNumber("N-RightTrigger", notSwerveController.getRightTriggerAxis()); // ✅ FIXED
 
         SmartDashboard.putBoolean("N-A", notSwerveController.a().getAsBoolean());
         SmartDashboard.putBoolean("N-X", notSwerveController.x().getAsBoolean());
