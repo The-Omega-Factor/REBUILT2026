@@ -88,8 +88,8 @@ public class Constants {
         1. IntakeSubsystem.java - ~line 68-69 in the "public IntakeSystem()" constructor
         2. SetIntakeState.java - ~line 31 in the "public void execute()" method
          */
-        public static final double pivotLowerLimit = 0;
-        public static final double pivotUpperLimit = 0;
+        public static final double pivotLowerLimit = 0.0;
+        public static final double pivotUpperLimit = 9.6;
 
         public static class pivotPIDs {
             public static final double kP = 0.5;

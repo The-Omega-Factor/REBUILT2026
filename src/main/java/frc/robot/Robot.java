@@ -20,8 +20,6 @@ public class Robot extends TimedRobot {
 
     private final RobotContainer m_robotContainer;
 
-
-
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
         .withTimestampReplay()
         .withJoystickReplay();

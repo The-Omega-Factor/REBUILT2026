@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
+import frc.robot.Constants.Intake;
 import frc.robot.commands.AlignToPose;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
@@ -55,15 +55,9 @@ public class RobotContainer {
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
     public RobotContainer() {
-        NamedCommands.registerCommand("B100Intake", new ParallelCommandGroup(
-            new ShootAndHopper(shooter, () -> shooter.getShooterVelocity(), () -> {return 0.0;}, true),
-            new SetIntakeState(intake, () -> {return 0.0;}, () -> {return intake.getPivotPosition();}, true))
-        );
-        NamedCommands.registerCommand("B101Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
-        NamedCommands.registerCommand("B102RaiseIntake", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
-        NamedCommands.registerCommand("B103Shoot", new ShootAndHopper(shooter, () -> {return 0.0;}, () -> {return 0.0;}, true));
         NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.32 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
         NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.15  * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
+        NamedCommands.registerCommand("B201LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(5));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser); // ✅ FIXED
