@@ -14,7 +14,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -40,7 +40,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.004;
     private Notifier m_simNotifier;
     private double m_lastSimTime;
-
+private final Field2d field = new Field2d();
     /* Alliance Perspective */
     private static final Rotation2d kBlueAlliancePerspective = Rotation2d.kZero;
     private static final Rotation2d kRedAlliancePerspective = Rotation2d.k180deg;
@@ -83,6 +83,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         configureAutoBuilder();
+        SmartDashboard.putData("Field", field);
     }
 
     private void configureAutoBuilder() {
@@ -206,7 +207,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     @Override
     public void periodic() {
         updateVisionPose();
-
+        field.setRobotPose(getPose());
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
