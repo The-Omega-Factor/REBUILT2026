@@ -8,6 +8,9 @@ import com.ctre.phoenix6.HootAutoReplay;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.RobotController;
@@ -25,8 +28,15 @@ public class Robot extends TimedRobot {
         .withTimestampReplay()
         .withJoystickReplay();
 
+    private final NetworkTable robot;
+    private final DoublePublisher batteryPublisher;
+
     public Robot() {
         m_robotContainer = new RobotContainer();
+
+        robot = NetworkTableInstance.getDefault().getTable("Robot");
+        batteryPublisher = robot.getDoubleTopic("Voltage").publish();
+        batteryPublisher.setDefault(-1.0);
     }
 
     @Override
@@ -44,7 +54,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run(); 
         Alliance.update();
 
-        SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage()); // ✅ ADD
+        batteryPublisher.set(RobotController.getBatteryVoltage());
     }
     @Override
     public void disabledInit() {}

@@ -245,12 +245,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
-
-        SmartDashboard.putNumber("X", getPose().getX());
-        SmartDashboard.putNumber("Y", getPose().getY());
-        SmartDashboard.putNumber("Theta", getPose().getRotation().getDegrees());
-
-        publishSwerveNetworkTable();
     }
 
     private void startSimThread() {
@@ -305,17 +299,5 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public void setCurrentPoseZero() {
         System.out.println("Setting current pose to be 0");
         this.getState().Pose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
-    }
-
-    public void publishSwerveNetworkTable() {
-        SwerveModuleState[] moduleStates = getState().ModuleStates;
-
-        double[] modulesAngle = new double[4];
-        double[] modulesSpeed = new double[4];
-
-        for (int i = 0; i < 4; i++) {
-            modulesAngle[i] = moduleStates[i].angle.getRadians();
-            modulesSpeed[i] = moduleStates[i].speedMetersPerSecond;
-        }
     }
 }
