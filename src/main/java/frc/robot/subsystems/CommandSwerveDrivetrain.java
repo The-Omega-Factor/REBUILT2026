@@ -23,6 +23,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -75,6 +77,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private final String limelightName = Constants.limelightName;
 
+    private final DoublePublisher robotSpeed;
+
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
@@ -110,6 +114,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 builder.addDoubleProperty("Robot Angle", () -> getState().RawHeading.getRadians(), null);
             }
         });
+
+        robotSpeed = NetworkTableInstance.getDefault().getTable("DriveState")
+                    .getSubTable("Speeds").getDoubleTopic("Velocity").publish();
+        robotSpeed.setDefault(0.0);
     }
 
     private void configureAutoBuilder() {
@@ -244,6 +252,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        robotSpeed.set(Math.hypot(getState().Speeds.vxMetersPerSecond, getState().Speeds.vyMetersPerSecond));
     }
 
     private void startSimThread() {
