@@ -11,7 +11,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +28,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utils.ChooserPublisher;
 import frc.robot.utils.ShooterSpeedCalculators.ShooterMode;
 
 public class RobotContainer {
@@ -61,8 +61,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("B201LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(5));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", autoChooser); // ✅ FIXED
-        SmartDashboard.putNumber("Time", Timer.getMatchTime());
+        
+        new ChooserPublisher("Autonomous", autoChooser);
 
         configureBindings();
     }

@@ -86,7 +86,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         configureAutoBuilder();
-        SmartDashboard.putData("Field", field);
 
         /* Instantiate NetworkTables Variables */
         SmartDashboard.putData("Swerve Drive", new Sendable() {
