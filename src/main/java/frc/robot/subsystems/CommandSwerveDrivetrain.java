@@ -20,8 +20,13 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.DoubleArrayPublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,7 +45,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.004;
     private Notifier m_simNotifier;
     private double m_lastSimTime;
-private final Field2d field = new Field2d();
+    private final Field2d field = new Field2d();
     /* Alliance Perspective */
     private static final Rotation2d kBlueAlliancePerspective = Rotation2d.kZero;
     private static final Rotation2d kRedAlliancePerspective = Rotation2d.k180deg;
@@ -72,6 +77,13 @@ private final Field2d field = new Field2d();
 
     private final String limelightName = Constants.limelightName;
 
+    /* NetworkTables */
+    private final NetworkTable drivetrainTable;
+    private final StructPublisher<Pose2d> posePublisher; 
+    private final StructPublisher<ChassisSpeeds> chassisPublisher;
+    private final DoubleArrayPublisher modulesAnglePublisher;
+    private final DoubleArrayPublisher modulesSpeedPublisher;
+
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
@@ -84,6 +96,16 @@ private final Field2d field = new Field2d();
 
         configureAutoBuilder();
         SmartDashboard.putData("Field", field);
+
+        /* Instantiate NetworkTables Variables */
+        drivetrainTable = NetworkTableInstance.getDefault().getTable("drivetrain");
+        posePublisher = drivetrainTable.getStructTopic("pose", Pose2d.struct).publish();
+        chassisPublisher = drivetrainTable.getStructTopic("chassis", ChassisSpeeds.struct).publish();
+        modulesAnglePublisher = drivetrainTable.getDoubleArrayTopic("modulesAngle").publish();
+        modulesSpeedPublisher = drivetrainTable.getDoubleArrayTopic("modulesSpeed").publish();
+
+        posePublisher.setDefault(new Pose2d());
+        chassisPublisher.setDefault(new ChassisSpeeds());
     }
 
     private void configureAutoBuilder() {
@@ -222,6 +244,8 @@ private final Field2d field = new Field2d();
         SmartDashboard.putNumber("X", getPose().getX());
         SmartDashboard.putNumber("Y", getPose().getY());
         SmartDashboard.putNumber("Theta", getPose().getRotation().getDegrees());
+
+        publishToNetworkTables();
     }
 
     private void startSimThread() {
@@ -276,5 +300,23 @@ private final Field2d field = new Field2d();
     public void setCurrentPoseZero() {
         System.out.println("Setting current pose to be 0");
         this.getState().Pose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    }
+
+    public void publishToNetworkTables() {
+        posePublisher.set(getPose());
+        chassisPublisher.set(getRobotRelativeSpeeds());
+
+        SwerveModuleState[] moduleStates = getState().ModuleStates;
+
+        double[] modulesAngle = new double[4];
+        double[] modulesSpeed = new double[4];
+
+        for (int i = 0; i < 4; i++) {
+            modulesAngle[i] = moduleStates[i].angle.getRadians();
+            modulesSpeed[i] = moduleStates[i].speedMetersPerSecond;
+        }
+
+        modulesAnglePublisher.set(modulesAngle);
+        modulesSpeedPublisher.set(modulesSpeed);
     }
 }
