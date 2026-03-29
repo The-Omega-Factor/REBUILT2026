@@ -9,7 +9,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Intake;
@@ -25,6 +26,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private final VelocityVoltage spinRequest;
     private final PositionVoltage pivotRequest;
+
+    private final DoublePublisher intakePositionPublisher;
+    private final DoublePublisher intakeSpeedPublisher;
 
     public IntakeSubsystem() {
         spinConfig = new TalonFXConfiguration();
@@ -88,6 +92,9 @@ public class IntakeSubsystem extends SubsystemBase {
 
         // Second pivot motor follows the first
         pivotL.setControl(new Follower(pivot.getDeviceID(), MotorAlignmentValue.Opposed));
+
+        intakePositionPublisher = NetworkTableInstance.getDefault().getTable("Intake").getDoubleTopic("Intake Position").publish();
+        intakeSpeedPublisher = NetworkTableInstance.getDefault().getTable("Intake").getDoubleTopic("Intake Speed").publish();
     }
 
     public void setIntakeSpinSpeed(double speed) {
@@ -108,7 +115,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Pivot Position", getPivotPosition());
-        SmartDashboard.putNumber("Spin Speed", getSpinSpeed());
+        intakePositionPublisher.set(getPivotPosition());
+        intakeSpeedPublisher.set(getSpinSpeed());
     }
 }
