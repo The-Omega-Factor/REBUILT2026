@@ -12,7 +12,7 @@ import frc.robot.Constants.Field;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import static frc.robot.utils.Alliance.getAlliance;
 
-public class AlignToPose extends Command {
+public class AlignToGoal extends Command {
     private final CommandSwerveDrivetrain drivetrain;
     private final double targetX;
     private final double targetY;
@@ -30,7 +30,7 @@ public class AlignToPose extends Command {
     private double currentY;
     private double currentHeading;
 
-    public AlignToPose(CommandSwerveDrivetrain drivetrain) {
+    public AlignToGoal(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
 
         this.targetX = getAlliance() == DriverStation.Alliance.Red ? Field.redX : Field.blueX;

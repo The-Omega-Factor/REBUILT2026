@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
 import frc.robot.Constants.Intake;
-import frc.robot.commands.AlignToPose;
+import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.SetIntakeState;
 import frc.robot.commands.SetOperatorForward;
 import frc.robot.commands.SetShooterSpeed;
@@ -59,6 +59,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.32 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
         NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.15  * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
         NamedCommands.registerCommand("B201LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(5));
+        NamedCommands.registerCommand("B202LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(2));
+        NamedCommands.registerCommand("B203SetShooterSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG));
+        NamedCommands.registerCommand("B204SetHopperSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG, () -> {return 1;}).withTimeout(10));
+        NamedCommands.registerCommand("B205AlignToGoal", new AlignToGoal(drivetrain).withTimeout(3));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         
@@ -87,7 +91,7 @@ public class RobotContainer {
         ));
         joystick.x().onTrue(new SetOperatorForward(drivetrain));
         joystick.y().onTrue(Commands.runOnce(drivetrain::zeroAll));
-        joystick.leftBumper().onTrue(new AlignToPose(drivetrain));
+        joystick.leftBumper().onTrue(new AlignToGoal(drivetrain));
 
         joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));

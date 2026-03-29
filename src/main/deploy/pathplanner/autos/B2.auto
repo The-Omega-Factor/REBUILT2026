@@ -9,6 +9,37 @@
           "data": {
             "pathName": "Shoot from Mid"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "B202LowerIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TurnAndShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "B204SetHopperSpeed"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "B205AlignToGoal"
+                }
+              }
+            ]
+          }
         }
       ]
     }
