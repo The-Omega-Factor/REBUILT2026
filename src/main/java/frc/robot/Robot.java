@@ -30,13 +30,16 @@ public class Robot extends TimedRobot {
 
     private final NetworkTable robot;
     private final DoublePublisher batteryPublisher;
+    private final DoublePublisher timerPublisher;
 
     public Robot() {
         m_robotContainer = new RobotContainer();
 
         robot = NetworkTableInstance.getDefault().getTable("Robot");
+        timerPublisher = robot.getDoubleTopic("Timer").publish();
         batteryPublisher = robot.getDoubleTopic("Voltage").publish();
         batteryPublisher.setDefault(-1.0);
+        timerPublisher.setDefault(0.0);
     }
 
     @Override
@@ -55,6 +58,7 @@ public class Robot extends TimedRobot {
         Alliance.update();
 
         batteryPublisher.set(RobotController.getBatteryVoltage());
+        timerPublisher.set(DriverStation.getMatchTime());
     }
     @Override
     public void disabledInit() {}
