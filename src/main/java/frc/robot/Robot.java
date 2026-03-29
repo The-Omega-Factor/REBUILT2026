@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -28,18 +29,23 @@ public class Robot extends TimedRobot {
         m_robotContainer = new RobotContainer();
     }
 
-@Override
-public void robotPeriodic() {
+    @Override
+    public void robotInit() {
+        CameraServer.startAutomaticCapture();
+    }
 
-    PortForwarder.add(5800, "limelight.local", 5800); 
-    PortForwarder.add(5801, "limelight.local", 5801); 
+    @Override
+    public void robotPeriodic() {
 
-    m_timeAndJoystickReplay.update();
-    CommandScheduler.getInstance().run(); 
-    Alliance.update();
+        PortForwarder.add(5800, "limelight.local", 5800); 
+        PortForwarder.add(5801, "limelight.local", 5801); 
 
-    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage()); // ✅ ADD
-}
+        m_timeAndJoystickReplay.update();
+        CommandScheduler.getInstance().run(); 
+        Alliance.update();
+
+        SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage()); // ✅ ADD
+    }
     @Override
     public void disabledInit() {}
 
