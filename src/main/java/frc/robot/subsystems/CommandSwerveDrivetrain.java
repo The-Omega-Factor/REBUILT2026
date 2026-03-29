@@ -23,10 +23,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -77,13 +75,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private final String limelightName = Constants.limelightName;
 
-    /* NetworkTables */
-    private final NetworkTable drivetrainTable;
-    private final StructPublisher<Pose2d> posePublisher; 
-    private final StructPublisher<ChassisSpeeds> chassisPublisher;
-    private final DoubleArrayPublisher modulesAnglePublisher;
-    private final DoubleArrayPublisher modulesSpeedPublisher;
-
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
@@ -98,14 +89,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SmartDashboard.putData("Field", field);
 
         /* Instantiate NetworkTables Variables */
-        drivetrainTable = NetworkTableInstance.getDefault().getTable("drivetrain");
-        posePublisher = drivetrainTable.getStructTopic("pose", Pose2d.struct).publish();
-        chassisPublisher = drivetrainTable.getStructTopic("chassis", ChassisSpeeds.struct).publish();
-        modulesAnglePublisher = drivetrainTable.getDoubleArrayTopic("modulesAngle").publish();
-        modulesSpeedPublisher = drivetrainTable.getDoubleArrayTopic("modulesSpeed").publish();
+        SmartDashboard.putData("Swerve Drive", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.setSmartDashboardType("SwerveDrive");
 
-        posePublisher.setDefault(new Pose2d());
-        chassisPublisher.setDefault(new ChassisSpeeds());
+                SwerveModuleState[] moduleStates = getState().ModuleStates;
+
+                builder.addDoubleProperty("Front Left Angle", () -> moduleStates[0].angle.getRadians(), null);
+                builder.addDoubleProperty("Front Left Velocity", () -> moduleStates[0].speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Front Right Angle", () -> moduleStates[0].angle.getRadians(), null);
+                builder.addDoubleProperty("Front Right Velocity", () -> moduleStates[0].speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Back Left Angle", () ->moduleStates[0].angle.getRadians(), null);
+                builder.addDoubleProperty("Back Left Velocity", () ->moduleStates[0].speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Back Right Angle", () -> moduleStates[0].angle.getRadians(), null);
+                builder.addDoubleProperty("Back Right Velocity", () -> moduleStates[0].speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Robot Angle", () -> getState().RawHeading.getRadians(), null);
+            }
+        });
     }
 
     private void configureAutoBuilder() {
@@ -245,7 +250,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SmartDashboard.putNumber("Y", getPose().getY());
         SmartDashboard.putNumber("Theta", getPose().getRotation().getDegrees());
 
-        publishToNetworkTables();
+        publishSwerveNetworkTable();
     }
 
     private void startSimThread() {
@@ -302,10 +307,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         this.getState().Pose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     }
 
-    public void publishToNetworkTables() {
-        posePublisher.set(getPose());
-        chassisPublisher.set(getRobotRelativeSpeeds());
-
+    public void publishSwerveNetworkTable() {
         SwerveModuleState[] moduleStates = getState().ModuleStates;
 
         double[] modulesAngle = new double[4];
@@ -315,8 +317,5 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             modulesAngle[i] = moduleStates[i].angle.getRadians();
             modulesSpeed[i] = moduleStates[i].speedMetersPerSecond;
         }
-
-        modulesAnglePublisher.set(modulesAngle);
-        modulesSpeedPublisher.set(modulesSpeed);
     }
 }
