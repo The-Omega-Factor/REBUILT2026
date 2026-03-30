@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
-import frc.robot.commands.TestCommand;
 import frc.robot.Constants.Intake;
 import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.SetIntakeState;
@@ -60,15 +59,15 @@ public class RobotContainer {
         NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.32 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
         NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.15  * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
         NamedCommands.registerCommand("B201LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(5));
-        NamedCommands.registerCommand("B202LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(2));
+        NamedCommands.registerCommand("B202LowerIntake", new SetIntakeState(intake, () -> {return 100;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(2));
         NamedCommands.registerCommand("B203SetShooterSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG));
-        NamedCommands.registerCommand("B204SetHopperSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG, () -> {return 1;}).withTimeout(10));
+        NamedCommands.registerCommand("B204SetHopperSpeed", new ShootAndHopper(shooter, () -> {return 100;}, () -> {return 100;}, false));
         NamedCommands.registerCommand("B205AlignToGoal", new AlignToGoal(drivetrain).withTimeout(3));
-        NamedCommands.registerCommand("TestCommand", new TestCommand(drivetrain));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         
         new ChooserPublisher("Autonomous", autoChooser);
+        SmartDashboard.putData(autoChooser);
 
         configureBindings();
     }

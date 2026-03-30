@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "TestCommand"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Shoot from Mid"

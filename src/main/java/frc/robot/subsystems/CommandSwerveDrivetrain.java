@@ -309,4 +309,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         System.out.println("Setting current pose to be 0");
         this.getState().Pose = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
     }
+
+    public Pose2d getReversePose() {
+        Pose2d currentPose = getPose();
+        return new Pose2d(currentPose.getX(), currentPose.getY(), currentPose.getRotation().rotateBy(new Rotation2d(180)));
+    }
 }
