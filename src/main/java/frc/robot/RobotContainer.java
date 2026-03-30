@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ShootAndHopper;
+import frc.robot.commands.TestCommand;
 import frc.robot.Constants.Intake;
 import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.SetIntakeState;
@@ -63,6 +64,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B203SetShooterSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG));
         NamedCommands.registerCommand("B204SetHopperSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG, () -> {return 1;}).withTimeout(10));
         NamedCommands.registerCommand("B205AlignToGoal", new AlignToGoal(drivetrain).withTimeout(3));
+        NamedCommands.registerCommand("TestCommand", new TestCommand(drivetrain));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         
@@ -130,22 +132,6 @@ public class RobotContainer {
     }
 
     public void addGamepadsTelemetry() {
-        SmartDashboard.putNumber("S-LeftY", joystick.getLeftY());
-        SmartDashboard.putNumber("S-LeftX", joystick.getLeftX());
-        SmartDashboard.putNumber("S-RightX", joystick.getRightX());
-
-        SmartDashboard.putBoolean("S-A", joystick.a().getAsBoolean());
-        SmartDashboard.putBoolean("S-B", joystick.b().getAsBoolean());
-        SmartDashboard.putBoolean("S-X", joystick.x().getAsBoolean());
-        SmartDashboard.putBoolean("S-Y", joystick.y().getAsBoolean());
-
-        SmartDashboard.putNumber("N-LeftY", notSwerveController.getLeftY());
-        SmartDashboard.putNumber("N-RightX", notSwerveController.getRightX());
-        SmartDashboard.putNumber("N-LeftTrigger", notSwerveController.getLeftTriggerAxis());
-        SmartDashboard.putNumber("N-RightTrigger", notSwerveController.getRightTriggerAxis()); // ✅ FIXED
-
-        SmartDashboard.putBoolean("N-A", notSwerveController.a().getAsBoolean());
-        SmartDashboard.putBoolean("N-X", notSwerveController.x().getAsBoolean());
-        SmartDashboard.putBoolean("N-Y", notSwerveController.y().getAsBoolean());
+        
     }
 }

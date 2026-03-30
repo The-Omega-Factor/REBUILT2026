@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
@@ -44,7 +43,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        CameraServer.startAutomaticCapture();
+        
     }
 
     @Override
