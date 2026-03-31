@@ -36,22 +36,15 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "B204SetHopperSpeed"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "B205AlignToGoal"
-                }
-              }
-            ]
+            "name": "B205AlignToGoal"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "B204SetHopperSpeed"
           }
         }
       ]

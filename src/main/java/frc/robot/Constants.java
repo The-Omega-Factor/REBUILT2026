@@ -111,7 +111,7 @@ public class Constants {
             }
 
             public static class Rotational {
-                public static final double kP = 0.4;
+                public static final double kP = 0.8;
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;
             }

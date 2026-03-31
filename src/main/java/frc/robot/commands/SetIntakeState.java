@@ -34,7 +34,7 @@ public class SetIntakeState extends Command {
     public void execute() {
         double targetPos = pivotPos.getAsDouble();
         //targetPos = MathUtil.clamp(targetPos, Constants.Intake.pivotLowerLimit, Constants.Intake.pivotUpperLimit);
-
+        
         intakeSubsystem.setIntakeSpinSpeed(spinSpeed.getAsDouble());
         intakeSubsystem.setPivotPosition(targetPos);
     }

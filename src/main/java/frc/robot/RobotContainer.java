@@ -28,7 +28,6 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utils.ChooserPublisher;
 import frc.robot.utils.ShooterSpeedCalculators.ShooterMode;
 
 public class RobotContainer {
@@ -55,21 +54,19 @@ public class RobotContainer {
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
-    private final ChooserPublisher autoChooserPublisher;
-
     public RobotContainer() {
         NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.32 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
         NamedCommands.registerCommand("Very Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.15  * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.67;}, false));
         NamedCommands.registerCommand("B201LowerIntake", new SetIntakeState(intake, () -> {return 1;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(5));
         NamedCommands.registerCommand("B202LowerIntake", new SetIntakeState(intake, () -> {return 50;}, () -> {return Intake.pivotUpperLimit;}, false).withTimeout(2));
         NamedCommands.registerCommand("B203SetShooterSpeed", new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.NODRAG));
-        NamedCommands.registerCommand("B204SetHopperSpeed", new ShootAndHopper(shooter, () -> {return 20;}, () -> {return 20;}, false));
+        NamedCommands.registerCommand("B204SetHopperSpeed", new ShootAndHopper(shooter, () -> {return 1;}, () -> {return 1;}, false));
         NamedCommands.registerCommand("B205AlignToGoal", new AlignToGoal(drivetrain).withTimeout(3));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        
-        autoChooserPublisher = new ChooserPublisher("Autonomous", autoChooser);
+
         SmartDashboard.putData(autoChooser);
+        
 
         configureBindings();
     }
@@ -121,7 +118,10 @@ public class RobotContainer {
         intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
             double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
             double left = MathUtil.applyDeadband(notSwerveController.getLeftTriggerAxis(), deadband); 
-            return (right - left) * Constants.Intake.spinSpeedMultiplier; }, () -> 
+            return (right - left) * Constants.Intake.spinSpeedMultiplier; 
+        }, 
+            
+            () -> 
             MathUtil.applyDeadband(notSwerveController.getRightX(), deadband)
             * Constants.Intake.pivotSpeedMultiplier + intake.getPivotPosition(), false));
 

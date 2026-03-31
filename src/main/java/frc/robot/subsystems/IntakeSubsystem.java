@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Intake;
+import frc.robot.Constants.Intake.SpinPIDs;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final TalonFXConfiguration spinConfig;
@@ -44,6 +45,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
         // Intake spin config
         spinConfig.Slot0.kP = Constants.Intake.SpinPIDs.kP;
+        spinConfig.Slot0.kS = SpinPIDs.kS;
+        spinConfig.Slot0.kV = SpinPIDs.kV;
         spinConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         spinConfig.Feedback.SensorToMechanismRatio = Constants.Intake.spinGearRatio;
 
