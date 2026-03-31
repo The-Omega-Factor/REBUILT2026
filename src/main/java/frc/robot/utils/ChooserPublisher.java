@@ -2,7 +2,6 @@ package frc.robot.utils;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,7 +16,7 @@ public class ChooserPublisher {
         builder = new SendableBuilderImpl();
         builder.setTable(table);
 
-        SendableRegistry.publish(chooser, builder);
+        chooser.initSendable(builder);
         builder.startListeners();
     }
 
