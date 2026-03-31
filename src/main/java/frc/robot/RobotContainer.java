@@ -28,7 +28,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utils.ChooserPublisher;
+import frc.robot.utils.AutoSelector;
 import frc.robot.utils.ShooterSpeedCalculators.ShooterMode;
 
 public class RobotContainer {
@@ -55,7 +55,7 @@ public class RobotContainer {
     private final ShooterSubsystem shooter = new ShooterSubsystem();
     private final IntakeSubsystem intake = new IntakeSubsystem();
 
-    private final ChooserPublisher autoChooserPublisher;
+    private final AutoSelector autoSelector;
 
     public RobotContainer() {
         NamedCommands.registerCommand("Simple Shoot", new ShootAndHopper(shooter, () -> {return 1.32 * Constants.Shooter.shooterSpeedMultiplier;} , () -> {return -0.5;}, false).withTimeout(10));
@@ -67,7 +67,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("B205AlignToGoal", new AlignToGoal(drivetrain).withTimeout(3));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-        autoChooserPublisher = new ChooserPublisher("Autonomous", autoChooser);
+        autoSelector = new AutoSelector(autoChooser);
 
         SmartDashboard.putData(autoChooser);
         
@@ -131,10 +131,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-    }
-
-    public void updateAutoChooserPublisher() {
-        autoChooserPublisher.update();
+        return autoSelector.getSelected();
     }
 }

@@ -58,8 +58,6 @@ public class Robot extends TimedRobot {
 
         batteryPublisher.set(RobotController.getBatteryVoltage());
         timerPublisher.set(DriverStation.getMatchTime());
-
-        m_robotContainer.updateAutoChooserPublisher();
     }
     @Override
     public void disabledInit() {}
