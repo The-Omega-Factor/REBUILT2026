@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Shoot from Mid"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Shoot from Mid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "B202LowerIntake"
+                }
+              }
+            ]
           }
         },
         {

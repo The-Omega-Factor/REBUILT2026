@@ -63,9 +63,9 @@ public class Constants {
         public static final double spinErrorTolerance = 1e-2;
 
         public static class SpinPIDs {
-            public static final double kP = 0.3;
-            public static final double kV = 0.0;
-            public static final double kS = 0.0;
+            public static final double kP = 0.0;
+            public static final double kV = 0.087; 
+            public static final double kS = 0.35;
             public static final double kI = 0.0; 
         }
 
@@ -111,7 +111,7 @@ public class Constants {
             }
 
             public static class Rotational {
-                public static final double kP = 0.5;
+                public static final double kP = 0.4;
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;
             }
