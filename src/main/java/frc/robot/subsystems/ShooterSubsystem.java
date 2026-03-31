@@ -70,7 +70,7 @@ public class ShooterSubsystem extends SubsystemBase {
         hopperConfig.Slot0.kV = Constants.Shooter.HopperPIDs.kV;
         hopperConfig.Slot0.kD = Constants.Shooter.HopperPIDs.kD;
 
-        hopperConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        hopperConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         hopperConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.hopperGearRatio;
 
         hopperConfig.CurrentLimits.StatorCurrentLimit = Constants.Shooter.hopperStatorAmpsLimit;

@@ -24,7 +24,7 @@ public class Constants {
 
         public static final double shootersGearRatio = 25/20;
         public static final double shootersStatorAmpsLimit = 40;
-        public static final double shootersCurrentLimit = 40;
+        public static final double shootersCurrentLimit = 60;
         public static final double shooterSpeedMultiplier = 1;
         public static final double shooterErrorTolerance = 2;
         public static final double shooterLaunchAngle = 75;
