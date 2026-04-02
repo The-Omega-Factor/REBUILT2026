@@ -13,7 +13,8 @@ package frc.robot;
 import com.ctre.phoenix6.CANBus;
 
 public class Constants {
-    public static final CANBus canbus = new CANBus("SwerveBase");
+    public static final CANBus canbus = new CANBus("rio");
+    public static final CANBus canbus2 = new CANBus("SwerveBase");
     public static final String limelightName = "Limelight2026";
     public static final double gravity = 9.81;
 

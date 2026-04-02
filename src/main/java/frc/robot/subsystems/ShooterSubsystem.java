@@ -35,9 +35,9 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterRConfig = new TalonFXConfiguration();
         hopperConfig = new TalonFXConfiguration();
 
-        shooterL = new TalonFX(Constants.Shooter.shooterLID, Constants.canbus);
-        shooterR = new TalonFX(Constants.Shooter.shooterRID, Constants.canbus);
-        hopper = new TalonFX(Constants.Shooter.hopperID, Constants.canbus);
+        shooterL = new TalonFX(Constants.Shooter.shooterLID, Constants.canbus2);
+        shooterR = new TalonFX(Constants.Shooter.shooterRID, Constants.canbus2);
+        hopper = new TalonFX(Constants.Shooter.hopperID, Constants.canbus2);
 
         shooterRequest = new VelocityVoltage(0).withSlot(0);
         hopperRequest = new VelocityVoltage(0).withSlot(0);
