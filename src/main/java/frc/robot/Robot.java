@@ -27,24 +27,26 @@ public class Robot extends TimedRobot {
         .withTimestampReplay()
         .withJoystickReplay();
 
-    private final NetworkTable robot;
+    private final NetworkTable robotTable;
     private final DoublePublisher batteryPublisher;
     private final DoublePublisher timerPublisher;
+
+    private final DoublePublisher switchTimerPublisher;
 
     public Robot() {
         m_robotContainer = new RobotContainer();
 
-        robot = NetworkTableInstance.getDefault().getTable("Robot");
-        timerPublisher = robot.getDoubleTopic("Timer").publish();
-        batteryPublisher = robot.getDoubleTopic("Voltage").publish();
+        robotTable = NetworkTableInstance.getDefault().getTable("Robot");
+        timerPublisher = robotTable.getDoubleTopic("Timer").publish();
+        batteryPublisher = robotTable.getDoubleTopic("Voltage").publish();
         batteryPublisher.setDefault(-1.0);
         timerPublisher.setDefault(0.0);
+
+        switchTimerPublisher = robotTable.getDoubleTopic("TimeBeforeSwitch").publish();
     }
 
     @Override
-    public void robotInit() {
-        
-    }
+    public void robotInit() {}
 
     @Override
     public void robotPeriodic() {
@@ -56,8 +58,17 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run(); 
         Alliance.update();
 
+        double currentMatchTime = DriverStation.getMatchTime();
+
         batteryPublisher.set(RobotController.getBatteryVoltage());
-        timerPublisher.set(DriverStation.getMatchTime());
+        timerPublisher.set(currentMatchTime);
+
+        if (currentMatchTime >= 130) switchTimerPublisher.set(currentMatchTime - 130);
+        if (currentMatchTime >= 105) switchTimerPublisher.set(currentMatchTime - 105);
+        if (currentMatchTime >= 80) switchTimerPublisher.set(currentMatchTime - 80);
+        if (currentMatchTime >= 55) switchTimerPublisher.set(currentMatchTime - 55);
+        if (currentMatchTime >= 30) switchTimerPublisher.set(currentMatchTime - 30);
+        switchTimerPublisher.set(currentMatchTime);
     }
     @Override
     public void disabledInit() {}
@@ -92,9 +103,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-
-    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
-
+        SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     }
   
 
