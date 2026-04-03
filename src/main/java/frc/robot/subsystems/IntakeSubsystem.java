@@ -36,9 +36,9 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotConfig = new TalonFXConfiguration();
         pivotLConfig = new TalonFXConfiguration();
 
-        spin = new TalonFX(Intake.spinID, Constants.canbus);
-        pivot = new TalonFX(Intake.pivotRID, Constants.canbus);
-        pivotL = new TalonFX(Intake.pivotLID, Constants.canbus);
+        spin = new TalonFX(Intake.spinID, Constants.canbus2);
+        pivot = new TalonFX(Intake.pivotRID, Constants.canbus2);
+        pivotL = new TalonFX(Intake.pivotLID, Constants.canbus2);
 
         spinRequest = new VelocityVoltage(0).withSlot(0);
         pivotRequest = new PositionVoltage(0).withSlot(0);
