@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1463975155279496,
-        "y": 5.753229813664595
+        "x": 1.0512744337094486,
+        "y": 5.691070894534065
       },
       "isLocked": false,
       "linkedName": "ShootFromMid"
@@ -20,8 +20,8 @@
         "y": 5.64055900621118
       },
       "prevControl": {
-        "x": 1.1556433007985798,
-        "y": 6.042954747116236
+        "x": 1.1634251023471291,
+        "y": 5.897370201762342
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,14 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "B203SetShooterSpeed",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -49,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -17.969139740157008
+    "rotation": 157.5984678999349
   },
   "reversed": false,
   "folder": "B2",

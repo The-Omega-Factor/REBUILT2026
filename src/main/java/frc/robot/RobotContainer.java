@@ -107,7 +107,7 @@ public class RobotContainer {
         shooter.setDefaultCommand(new ShootAndHopper(shooter, 
         () -> {
             if (notSwerveController.x().getAsBoolean()) return 1.36 * Constants.Shooter.shooterSpeedMultiplier;
-            if (notSwerveController.a().getAsBoolean()) return 1 * Constants.Shooter.shooterSpeedMultiplier;
+            if (notSwerveController.a().getAsBoolean()) return 0.9 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.y().getAsBoolean()) return 2.0 * Constants.Shooter.shooterSpeedMultiplier;
             if (notSwerveController.b().getAsBoolean()) return -1 * Constants.Shooter.shooterSpeedMultiplier;
             return 0.0;
@@ -116,8 +116,8 @@ public class RobotContainer {
         false)
         );
 
-        notSwerveController.leftBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
-        notSwerveController.rightBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
+        //notSwerveController.leftBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
+        //notSwerveController.rightBumper().onTrue(new SetShooterSpeed(shooter, drivetrain.getPose(), ShooterMode.LENGTH));
 
         intake.setDefaultCommand(new SetIntakeState(intake, () -> { 
             double right = MathUtil.applyDeadband(notSwerveController.getRightTriggerAxis(), deadband); 
@@ -131,6 +131,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoSelector.getSelected();
+        return autoChooser.getSelected();
     }
 }
